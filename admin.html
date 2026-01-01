@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - okapadesign</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #f5f5f5;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #888;
+            margin-bottom: 2rem;
+        }
+
+        .accent {
+            color: #d4a574;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+        }
+
+        .card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 0.5rem;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 1rem;
+            background: #0a0a0a;
+            border: 1px solid #333;
+            color: #f5f5f5;
+            border-radius: 4px;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #d4a574;
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: #d4a574;
+            color: #0a0a0a;
+        }
+
+        .btn-primary:hover {
+            background: #e8c9a8;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .products-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .product-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #0a0a0a;
+            border-radius: 4px;
+            margin-bottom: 0.75rem;
+        }
+
+        .product-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-info h4 {
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .product-info p {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .product-price {
+            font-weight: 600;
+            color: #d4a574;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .alert-success {
+            background: rgba(40, 167, 69, 0.2);
+            border: 1px solid #28a745;
+        }
+
+        .alert-info {
+            background: rgba(212, 165, 116, 0.1);
+            border: 1px solid #d4a574;
+            font-size: 0.9rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #888;
+            text-decoration: none;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .back-link:hover {
+            color: #d4a574;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Voltar ao site</a>
+        <h1>Painel <span class="accent">Admin</span></h1>
+        <p class="subtitle">Gerencie os produtos do seu site</p>
+
+        <div class="alert alert-info">
+            💡 Os produtos são salvos no navegador (localStorage). Após adicionar, atualize a página do site para ver as
+            mudanças.
+        </div>
+
+        <div id="success-alert" class="alert alert-success" style="display: none;">
+            ✅ Produto adicionado com sucesso!
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h2>➕ Adicionar Produto</h2>
+                <form id="product-form">
+                    <div class="form-group">
+                        <label>Título da Obra *</label>
+                        <input type="text" id="title" required placeholder="Ex: Harmonia Abstrata">
+                    </div>
+                    <div class="form-group">
+                        <label>Categoria *</label>
+                        <select id="category" required>
+                            <option value="paintings">Quadros</option>
+                            <option value="lettering">Digital</option>
+                            <option value="3d">2D/3D</option>
+                            <option value="music">Música/Som</option>
+                            <option value="merch">Merchandising</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo</label>
+                        <input type="text" id="type" placeholder="Ex: Quadro Original, Arte Digital">
+                    </div>
+                    <div class="form-group">
+                        <label>Preço (€) *</label>
+                        <input type="number" id="price" required placeholder="Ex: 890">
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição</label>
+                        <textarea id="desc" placeholder="Ex: Acrílico sobre tela, 80x100cm"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>URL da Imagem *</label>
+                        <input type="text" id="image" required placeholder="images/nova-obra.jpg ou URL externa">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Adicionar Produto</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2>📦 Produtos (<span id="count">0</span>)</h2>
+                <div id="products-list" class="products-list">
+                    <div class="empty">Carregando...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('product-form');
+        const list = document.getElementById('products-list');
+        const countEl = document.getElementById('count');
+        const successAlert = document.getElementById('success-alert');
+
+        // Default products
+        const defaultProducts = [
+            { id: 1, title: 'Harmonia Abstrata', category: 'paintings', price: 890, type: 'Quadro Original', desc: 'Acrílico sobre tela, 80x100cm', image: 'images/art1.jpg' },
+            { id: 2, title: 'Sonho Tropical', category: 'paintings', price: 650, type: 'Quadro Original', desc: 'Óleo sobre tela, 60x80cm', image: 'images/art4.jpg' },
+            { id: 3, title: 'Good Vibes Only', category: 'lettering', price: 25, type: 'Arte Digital', desc: 'Design para estampa, PNG/SVG', image: 'images/art2.jpg' },
+            { id: 4, title: 'Create Your Sunshine', category: 'lettering', price: 30, type: 'Arte Digital', desc: 'Design para estampa, PNG/SVG', image: 'images/art3.jpg' },
+            { id: 5, title: 'T-Shirt Pack', category: 'merch', price: 45, type: 'Pack Merchandising', desc: '5 designs para estampar', image: 'images/art5.jpg' },
+            { id: 6, title: 'Pack Garrafa Térmica', category: 'merch', price: 35, type: 'Pack Merchandising', desc: '3 designs para garrafas', image: 'images/art6.jpg' },
+            { id: 7, title: 'Oceano Sereno', category: 'paintings', price: 720, type: 'Quadro Original', desc: 'Acrílico sobre tela, 70x90cm', image: 'images/art1.jpg' },
+            { id: 8, title: 'Pôr do Sol Urbano', category: 'paintings', price: 580, type: 'Quadro Original', desc: 'Óleo sobre tela, 50x70cm', image: 'images/art4.jpg' },
+            { id: 9, title: 'Stay Positive', category: 'lettering', price: 20, type: 'Arte Digital', desc: 'Design para estampa, PNG/SVG', image: 'images/art2.jpg' },
+            { id: 10, title: 'Dream Big', category: 'lettering', price: 22, type: 'Arte Digital', desc: 'Design para estampa, PNG/SVG', image: 'images/art3.jpg' },
+            { id: 11, title: 'Be Kind', category: 'lettering', price: 18, type: 'Arte Digital', desc: 'Design para estampa, PNG/SVG', image: 'images/art2.jpg' },
+            { id: 12, title: 'Pack Canecas', category: 'merch', price: 40, type: 'Pack Merchandising', desc: '4 designs para canecas', image: 'images/art5.jpg' },
+            { id: 13, title: 'Pack Cadernos', category: 'merch', price: 38, type: 'Pack Merchandising', desc: '5 designs para capas', image: 'images/art6.jpg' },
+            { id: 14, title: 'Floresta Encantada', category: 'paintings', price: 950, type: 'Quadro Original', desc: 'Técnica mista, 100x120cm', image: 'images/art1.jpg' },
+            { id: 15, title: 'Love Yourself', category: 'lettering', price: 25, type: 'Arte Digital', desc: 'Design para estampa, PNG/SVG', image: 'images/art3.jpg' },
+            { id: 16, title: 'Pack Completo', category: 'merch', price: 75, type: 'Pack Merchandising', desc: '10 designs variados', image: 'images/art5.jpg' }
+        ];
+
+        function getProducts() {
+            const saved = localStorage.getItem('okapa_products');
+            return saved ? JSON.parse(saved) : defaultProducts;
+        }
+
+        function saveProducts(products) {
+            localStorage.setItem('okapa_products', JSON.stringify(products));
+        }
+
+        function renderProducts() {
+            const products = getProducts();
+            countEl.textContent = products.length;
+
+            if (products.length === 0) {
+                list.innerHTML = '<div class="empty">Nenhum produto cadastrado</div>';
+                return;
+            }
+
+            list.innerHTML = products.map(p => `
+                <div class="product-item">
+                    <img src="${p.image}" alt="${p.title}" onerror="this.src='https://placehold.co/60x60/1a1a1a/d4a574?text=IMG'">
+                    <div class="product-info">
+                        <h4>${p.title}</h4>
+                        <p>${p.type || p.category} • ${p.desc || ''}</p>
+                    </div>
+                    <span class="product-price">€${p.price}</span>
+                    <button class="btn btn-danger" onclick="deleteProduct(${p.id})">🗑</button>
+                </div>
+            `).join('');
+        }
+
+        function deleteProduct(id) {
+            if (confirm('Remover este produto?')) {
+                const products = getProducts().filter(p => p.id !== id);
+                saveProducts(products);
+                renderProducts();
+            }
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const products = getProducts();
+            const newId = Math.max(...products.map(p => p.id), 0) + 1;
+
+            products.push({
+                id: newId,
+                title: document.getElementById('title').value,
+                category: document.getElementById('category').value,
+                type: document.getElementById('type').value || '',
+                price: parseInt(document.getElementById('price').value),
+                desc: document.getElementById('desc').value || '',
+                image: document.getElementById('image').value
+            });
+
+            saveProducts(products);
+            renderProducts();
+            form.reset();
+
+            successAlert.style.display = 'block';
+            setTimeout(() => successAlert.style.display = 'none', 3000);
+        });
+
+        renderProducts();
+    </script>
+</body>
+
+</html>
