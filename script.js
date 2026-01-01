@@ -1,4 +1,13 @@
+// ===== SUPABASE CONFIG =====
+const SUPABASE_URL = 'https://yjayutnbxfblzndtvqae.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlqYXl1dG5ieGZibHpuZHR2cWFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczMDAxMDQsImV4cCI6MjA4Mjg3NjEwNH0.JoD9XpHyRRL0bMZeIvKVtzriEIfqPm8EBAvNJ5bQtBA';
+const supabase = typeof supabase !== 'undefined' ?
+    window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
 // ===== DATA =====
+let artworks = []; // Will be loaded from Supabase
+
+// Local fallback data (kept as backup or for initial load reference)
 const defaultArtworks = [
     // QUADROS (8 produtos)
     { id: 1, title: 'Harmonia Abstrata', titleEn: 'Abstract Harmony', category: 'paintings', price: 890, type: 'Quadro Original', desc: 'Acrílico sobre tela, 80x100cm', descEn: 'Acrylic on canvas, 80x100cm', image: 'images/art1.jpg' },
@@ -52,7 +61,8 @@ function getArtworks() {
     const saved = localStorage.getItem('okapa_products');
     return saved ? JSON.parse(saved) : defaultArtworks;
 }
-let artworks = getArtworks();
+// Carregar dados iniciais (fallback)
+artworks = getArtworks();
 
 // ===== TRANSLATIONS =====
 const translations = {
@@ -203,6 +213,38 @@ window.addEventListener('scroll', () => {
 });
 
 // ===== RENDER SHOP WITH PAGINATION =====
+// Load from Supabase or use defaults
+async function loadArtworks() {
+    try {
+        if (!supabase) throw new Error('Supabase not initialized');
+
+        const { data, error } = await supabase
+            .from('products')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+            artworks = data.map(item => ({
+                id: item.id,
+                title: item.title,
+                titleEn: item.title_en,
+                category: item.category,
+                price: Number(item.price),
+                type: item.type,
+                typeEn: item.type_en,
+                desc: item.description,
+                descEn: item.description_en,
+                image: item.image_url
+            }));
+        }
+    } catch (err) {
+        console.error('Error loading from Supabase:', err);
+    }
+    renderShop();
+}
+
 function renderShop(filter = currentFilter, page = currentPage) {
     currentFilter = filter;
     currentPage = page;
@@ -312,8 +354,6 @@ document.querySelectorAll('.section').forEach(section => {
 
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
-    renderShop();
-
     // Initialize language
     setLanguage(currentLang);
 
@@ -321,4 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
     });
+
+    // Load from Supabase
+    loadArtworks();
 });

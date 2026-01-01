@@ -212,6 +212,32 @@
             padding: 2rem;
             color: #666;
         }
+
+        .btn-translate {
+            background: none;
+            border: none;
+            color: #d4a574;
+            font-size: 0.75rem;
+            cursor: pointer;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            transition: 0.2s;
+            float: right;
+        }
+
+        .btn-translate:hover {
+            background: rgba(212, 165, 116, 0.1);
+        }
+
+        .edit-badge {
+            background: #d4a574;
+            color: #0a0a0a;
+            font-size: 0.6rem;
+            padding: 0.1rem 0.3rem;
+            border-radius: 2px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -221,151 +247,357 @@
         <h1>Painel <span class="accent">Admin</span></h1>
         <p class="subtitle">Gerencie os produtos do seu site</p>
 
-        <div class="alert alert-info">
-            💡 Os produtos são salvos no navegador (localStorage). Após adicionar, atualize a página do site para ver as
-            mudanças.
+        <!-- Auth Section -->
+        <div id="auth-section" class="card" style="max-width: 400px; margin: 2rem auto;">
+            <h2>🔐 Login Admin</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Entrar</button>
+            </form>
         </div>
 
-        <div id="success-alert" class="alert alert-success" style="display: none;">
-            ✅ Produto adicionado com sucesso!
-        </div>
-
-        <div class="grid">
-            <div class="card">
-                <h2>➕ Adicionar Produto</h2>
-                <form id="product-form">
-                    <div class="form-group">
-                        <label>Título da Obra *</label>
-                        <input type="text" id="title" required placeholder="Ex: Harmonia Abstrata">
-                    </div>
-                    <div class="form-group">
-                        <label>Categoria *</label>
-                        <select id="category" required>
-                            <option value="paintings">Quadros</option>
-                            <option value="lettering">Digital</option>
-                            <option value="3d">2D/3D</option>
-                            <option value="music">Música/Som</option>
-                            <option value="merch">Merchandising</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Tipo</label>
-                        <input type="text" id="type" placeholder="Ex: Quadro Original, Arte Digital">
-                    </div>
-                    <div class="form-group">
-                        <label>Preço (€) *</label>
-                        <input type="number" id="price" required placeholder="Ex: 890">
-                    </div>
-                    <div class="form-group">
-                        <label>Descrição</label>
-                        <textarea id="desc" placeholder="Ex: Acrílico sobre tela, 80x100cm"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>URL da Imagem *</label>
-                        <input type="text" id="image" required placeholder="images/nova-obra.jpg ou URL externa">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Adicionar Produto</button>
-                </form>
+        <!-- Main Admin Content (Hidden until login) -->
+        <div id="admin-content" style="display: none;">
+            <div id="success-alert" class="alert alert-success" style="display: none;">
+                ✅ Operação realizada com sucesso!
             </div>
 
-            <div class="card">
-                <h2>📦 Produtos (<span id="count">0</span>)</h2>
-                <div id="products-list" class="products-list">
-                    <div class="empty">Carregando...</div>
+            <div class="grid">
+                <div class="card">
+                    <h2 id="form-title">➕ Adicionar Produto</h2>
+                    <form id="product-form">
+                        <input type="hidden" id="product-id">
+
+                        <div class="form-group">
+                            <label>Título (PT) *</label>
+                            <input type="text" id="title" required placeholder="Ex: Harmonia Abstrata">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Title (EN)
+                                <button type="button" class="btn-translate"
+                                    onclick="translateText('title', 'titleEn')">✨ Traduzir</button>
+                            </label>
+                            <input type="text" id="titleEn" placeholder="Ex: Abstract Harmony">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Categoria *</label>
+                            <select id="category" required>
+                                <option value="paintings">Quadros</option>
+                                <option value="lettering">Digital</option>
+                                <option value="3d">2D/3D</option>
+                                <option value="music">Música/Som</option>
+                                <option value="merch">Merchandising</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tipo (PT)</label>
+                            <input type="text" id="type" placeholder="Ex: Quadro Original">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Type (EN)
+                                <button type="button" class="btn-translate" onclick="translateText('type', 'typeEn')">✨
+                                    Traduzir</button>
+                            </label>
+                            <input type="text" id="typeEn" placeholder="Ex: Original Painting">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Preço (€) *</label>
+                            <input type="number" id="price" required placeholder="Ex: 890">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Descrição (PT)</label>
+                            <textarea id="desc" placeholder="Ex: Acrílico sobre tela"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Description (EN)
+                                <button type="button" class="btn-translate" onclick="translateText('desc', 'descEn')">✨
+                                    Traduzir</button>
+                            </label>
+                            <textarea id="descEn" placeholder="Ex: Acrylic on canvas"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Imagem da Obra *</label>
+                            <input type="file" id="image-file" accept="image/*" style="margin-bottom: 0.5rem;">
+                            <input type="text" id="image-url" placeholder="Ou cole um URL externo">
+                            <div id="upload-status" style="font-size: 0.8rem; margin-top: 0.5rem; color: #888;"></div>
+                        </div>
+
+                        <div style="display: flex; gap: 1rem;">
+                            <button type="submit" id="submit-btn" class="btn btn-primary">Salvar Produto</button>
+                            <button type="button" id="cancel-edit" class="btn"
+                                style="background: #333; display: none;">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h2>📦 Produtos (<span id="count">0</span>)</h2>
+                    <div id="products-list" class="products-list">
+                        <div class="empty">Carregando...</div>
+                    </div>
                 </div>
             </div>
+
+            <button onclick="handleLogout()" class="btn" style="background: #333; margin-top: 2rem;">Sair do
+                Painel</button>
         </div>
     </div>
 
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script>
-        const form = document.getElementById('product-form');
-        const list = document.getElementById('products-list');
+        // CONFIG
+        const SUPABASE_URL = 'https://yjayutnbxfblzndtvqae.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlqYXl1dG5ieGZibHpuZHR2cWFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczMDAxMDQsImV4cCI6MjA4Mjg3NjEwNH0.JoD9XpHyRRL0bMZeIvKVtzriEIfqPm8EBAvNJ5bQtBA';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // Elements
+        const authSection = document.getElementById('auth-section');
+        const adminContent = document.getElementById('admin-content');
+        const loginForm = document.getElementById('login-form');
+        const productForm = document.getElementById('product-form');
+        const productsList = document.getElementById('products-list');
         const countEl = document.getElementById('count');
         const successAlert = document.getElementById('success-alert');
+        const uploadStatus = document.getElementById('upload-status');
+        const formTitle = document.getElementById('form-title');
+        const submitBtn = document.getElementById('submit-btn');
+        const cancelBtn = document.getElementById('cancel-edit');
 
-        // Default products
-        const defaultProducts = [
-            { id: 1, title: 'Harmonia Abstrata', category: 'paintings', price: 890, type: 'Quadro Original', desc: 'Acrílico sobre tela, 80x100cm', image: 'images/art1.jpg' },
-            { id: 2, title: 'Sonho Tropical', category: 'paintings', price: 650, type: 'Quadro Original', desc: 'Óleo sobre tela, 60x80cm', image: 'images/art4.jpg' },
-            { id: 3, title: 'Good Vibes Only', category: 'lettering', price: 25, type: 'Arte Digital', desc: 'Design para estampa, PNG/SVG', image: 'images/art2.jpg' },
-            { id: 4, title: 'Create Your Sunshine', category: 'lettering', price: 30, type: 'Arte Digital', desc: 'Design para estampa, PNG/SVG', image: 'images/art3.jpg' },
-            { id: 5, title: 'T-Shirt Pack', category: 'merch', price: 45, type: 'Pack Merchandising', desc: '5 designs para estampar', image: 'images/art5.jpg' },
-            { id: 6, title: 'Pack Garrafa Térmica', category: 'merch', price: 35, type: 'Pack Merchandising', desc: '3 designs para garrafas', image: 'images/art6.jpg' },
-            { id: 7, title: 'Oceano Sereno', category: 'paintings', price: 720, type: 'Quadro Original', desc: 'Acrílico sobre tela, 70x90cm', image: 'images/art1.jpg' },
-            { id: 8, title: 'Pôr do Sol Urbano', category: 'paintings', price: 580, type: 'Quadro Original', desc: 'Óleo sobre tela, 50x70cm', image: 'images/art4.jpg' },
-            { id: 9, title: 'Stay Positive', category: 'lettering', price: 20, type: 'Arte Digital', desc: 'Design para estampa, PNG/SVG', image: 'images/art2.jpg' },
-            { id: 10, title: 'Dream Big', category: 'lettering', price: 22, type: 'Arte Digital', desc: 'Design para estampa, PNG/SVG', image: 'images/art3.jpg' },
-            { id: 11, title: 'Be Kind', category: 'lettering', price: 18, type: 'Arte Digital', desc: 'Design para estampa, PNG/SVG', image: 'images/art2.jpg' },
-            { id: 12, title: 'Pack Canecas', category: 'merch', price: 40, type: 'Pack Merchandising', desc: '4 designs para canecas', image: 'images/art5.jpg' },
-            { id: 13, title: 'Pack Cadernos', category: 'merch', price: 38, type: 'Pack Merchandising', desc: '5 designs para capas', image: 'images/art6.jpg' },
-            { id: 14, title: 'Floresta Encantada', category: 'paintings', price: 950, type: 'Quadro Original', desc: 'Técnica mista, 100x120cm', image: 'images/art1.jpg' },
-            { id: 15, title: 'Love Yourself', category: 'lettering', price: 25, type: 'Arte Digital', desc: 'Design para estampa, PNG/SVG', image: 'images/art3.jpg' },
-            { id: 16, title: 'Pack Completo', category: 'merch', price: 75, type: 'Pack Merchandising', desc: '10 designs variados', image: 'images/art5.jpg' }
-        ];
+        let isEditing = false;
 
-        function getProducts() {
-            const saved = localStorage.getItem('okapa_products');
-            return saved ? JSON.parse(saved) : defaultProducts;
+        // AUTH CHECK
+        async function checkUser() {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                showAdmin();
+            } else {
+                showAuth();
+            }
         }
 
-        function saveProducts(products) {
-            localStorage.setItem('okapa_products', JSON.stringify(products));
+        function showAdmin() {
+            authSection.style.display = 'none';
+            adminContent.style.display = 'block';
+            loadProducts();
         }
 
-        function renderProducts() {
-            const products = getProducts();
-            countEl.textContent = products.length;
+        function showAuth() {
+            authSection.style.display = 'block';
+            adminContent.style.display = 'none';
+        }
 
-            if (products.length === 0) {
-                list.innerHTML = '<div class="empty">Nenhum produto cadastrado</div>';
+        // LOGIN
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            const { error } = await supabase.auth.signInWithPassword({ email, password });
+            if (error) {
+                alert('Erro no login: ' + error.message);
+            } else {
+                showAdmin();
+            }
+        });
+
+        async function handleLogout() {
+            await supabase.auth.signOut();
+            showAuth();
+        }
+
+        // PRODUCTS CRUD
+        async function loadProducts() {
+            const { data, error } = await supabase
+                .from('products')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error(error);
                 return;
             }
 
-            list.innerHTML = products.map(p => `
+            countEl.textContent = data.length;
+            if (data.length === 0) {
+                productsList.innerHTML = '<div class="empty">Nenhum produto cadastrado</div>';
+                return;
+            }
+
+            productsList.innerHTML = data.map(p => `
                 <div class="product-item">
-                    <img src="${p.image}" alt="${p.title}" onerror="this.src='https://placehold.co/60x60/1a1a1a/d4a574?text=IMG'">
+                    <img src="${p.image_url}" alt="${p.title}" onerror="this.src='https://placehold.co/60x60/1a1a1a/d4a574?text=IMG'">
                     <div class="product-info">
-                        <h4>${p.title}</h4>
-                        <p>${p.type || p.category} • ${p.desc || ''}</p>
+                        <h4>${p.title} ${p.title_en ? '<span class="edit-badge">EN</span>' : ''}</h4>
+                        <p>${p.type || p.category} • €${p.price}</p>
                     </div>
-                    <span class="product-price">€${p.price}</span>
-                    <button class="btn btn-danger" onclick="deleteProduct(${p.id})">🗑</button>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button class="btn" style="background: #333;" onclick="editProduct('${p.id}')">✏️</button>
+                        <button class="btn btn-danger" onclick="deleteProduct('${p.id}')">🗑</button>
+                    </div>
                 </div>
             `).join('');
         }
 
-        function deleteProduct(id) {
-            if (confirm('Remover este produto?')) {
-                const products = getProducts().filter(p => p.id !== id);
-                saveProducts(products);
-                renderProducts();
+        async function deleteProduct(id) {
+            if (confirm('Tem certeza que deseja apagar este produto?')) {
+                const { error } = await supabase.from('products').delete().eq('id', id);
+                if (error) alert(error.message);
+                else loadProducts();
             }
         }
 
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const products = getProducts();
-            const newId = Math.max(...products.map(p => p.id), 0) + 1;
+        function editProduct(id) {
+            // Find product in current list or fetch
+            supabase.from('products').select('*').eq('id', id).single().then(({ data }) => {
+                if (data) {
+                    isEditing = true;
+                    formTitle.textContent = '✏️ Editar Produto';
+                    submitBtn.textContent = 'Atualizar Produto';
+                    cancelBtn.style.display = 'inline-flex';
 
-            products.push({
-                id: newId,
-                title: document.getElementById('title').value,
-                category: document.getElementById('category').value,
-                type: document.getElementById('type').value || '',
-                price: parseInt(document.getElementById('price').value),
-                desc: document.getElementById('desc').value || '',
-                image: document.getElementById('image').value
+                    document.getElementById('product-id').value = data.id;
+                    document.getElementById('title').value = data.title;
+                    document.getElementById('titleEn').value = data.title_en || '';
+                    document.getElementById('category').value = data.category;
+                    document.getElementById('type').value = data.type || '';
+                    document.getElementById('typeEn').value = data.type_en || '';
+                    document.getElementById('price').value = data.price;
+                    document.getElementById('desc').value = data.description || '';
+                    document.getElementById('descEn').value = data.description_en || '';
+                    document.getElementById('image-url').value = data.image_url || '';
+
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
             });
+        }
 
-            saveProducts(products);
-            renderProducts();
-            form.reset();
+        cancelBtn.onclick = () => {
+            isEditing = false;
+            formTitle.textContent = '➕ Adicionar Produto';
+            submitBtn.textContent = 'Salvar Produto';
+            cancelBtn.style.display = 'none';
+            productForm.reset();
+            document.getElementById('product-id').value = '';
+        };
 
-            successAlert.style.display = 'block';
-            setTimeout(() => successAlert.style.display = 'none', 3000);
+        // FORM SUBMISSION
+        productForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'A processar...';
+
+            let imageUrl = document.getElementById('image-url').value;
+            const fileInput = document.getElementById('image-file');
+
+            // Handle Image Upload if file selected
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const fileExt = file.name.split('.').pop();
+                const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
+                const filePath = `${fileName}`;
+
+                uploadStatus.textContent = '⏳ Fazendo upload da imagem...';
+
+                const { error: uploadError } = await supabase.storage
+                    .from('product-images')
+                    .upload(filePath, file);
+
+                if (uploadError) {
+                    alert('Erro no upload: ' + uploadError.message);
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Salvar Produto';
+                    return;
+                }
+
+                const { data: { publicUrl } } = supabase.storage
+                    .from('product-images')
+                    .getPublicUrl(filePath);
+
+                imageUrl = publicUrl;
+            }
+
+            const productData = {
+                title: document.getElementById('title').value,
+                title_en: document.getElementById('titleEn').value,
+                category: document.getElementById('category').value,
+                type: document.getElementById('type').value,
+                type_en: document.getElementById('typeEn').value,
+                price: parseFloat(document.getElementById('price').value),
+                description: document.getElementById('desc').value,
+                description_en: document.getElementById('descEn').value,
+                image_url: imageUrl
+            };
+
+            let error;
+            if (isEditing) {
+                const id = document.getElementById('product-id').value;
+                const { error: err } = await supabase
+                    .from('products')
+                    .update(productData)
+                    .eq('id', id);
+                error = err;
+            } else {
+                const { error: err } = await supabase
+                    .from('products')
+                    .insert([productData]);
+                error = err;
+            }
+
+            if (error) {
+                alert('Erro ao salvar: ' + error.message);
+            } else {
+                successAlert.style.display = 'block';
+                setTimeout(() => successAlert.style.display = 'none', 3000);
+                cancelBtn.click(); // Reset form
+                loadProducts();
+            }
+
+            submitBtn.disabled = false;
+            uploadStatus.textContent = '';
         });
 
-        renderProducts();
+        // AUTO TRANSLATION (MyMemory API)
+        async function translateText(sourceId, targetId) {
+            const text = document.getElementById(sourceId).value;
+            if (!text) return;
+
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = '...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=pt|en`);
+                const data = await response.json();
+                if (data.responseData) {
+                    document.getElementById(targetId).value = data.responseData.translatedText;
+                }
+            } catch (err) {
+                console.error('Translation error:', err);
+            } finally {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        checkUser();
     </script>
 </body>
 
