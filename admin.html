@@ -269,7 +269,7 @@
                 <span style="font-size: 0.8rem;">OU</span>
                 <hr style="flex: 1; border: 0; border-top: 1px solid #333;">
             </div>
-            <button id="google-login-btn" class="btn"
+            <button id="google-login-btn" type="button" class="btn"
                 style="width: 100%; background: #fff; color: #000; justify-content: center;">
                 <img src="https://www.google.com/favicon.ico" alt="Google" style="width: 16px; height: 16px;">
                 Entrar com Google
@@ -375,10 +375,20 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
+        console.log('Admin Script: Iniciando...');
         // CONFIG
         const SUPABASE_URL = 'https://yjayutnbxfblzndtvqae.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlqYXl1dG5ieGZibHpuZHR2cWFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczMDAxMDQsImV4cCI6MjA4Mjg3NjEwNH0.JoD9XpHyRRL0bMZeIvKVtzriEIfqPm8EBAvNJ5bQtBA';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        let supabase;
+        try {
+            if (!window.supabase) throw new Error('SDK do Supabase não carregado!');
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            console.log('Supabase: Cliente inicializado.');
+        } catch (e) {
+            console.error('Erro ao inicializar Supabase:', e);
+            alert('Erro crítico: ' + e.message);
+        }
 
         // Elements
         const authSection = document.getElementById('auth-section');
