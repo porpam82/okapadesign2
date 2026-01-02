@@ -266,7 +266,7 @@
                 <span style="font-size: 0.8rem;">OU</span>
                 <hr style="flex: 1; border: 0; border-top: 1px solid #333;">
             </div>
-            <button onclick="handleGoogleLogin()" class="btn"
+            <button id="google-login-btn" class="btn"
                 style="width: 100%; background: #fff; color: #000; justify-content: center;">
                 <img src="https://www.google.com/favicon.ico" alt="Google" style="width: 16px; height: 16px;">
                 Entrar com Google
@@ -433,14 +433,23 @@
         }
 
         async function handleGoogleLogin() {
+            console.log('Iniciando login com Google...');
+            if (window.location.protocol === 'file:') {
+                alert('O login do Google não funciona abrindo o ficheiro diretamente (file://). \n\nPor favor, use o link do site no Cloudflare ou um servidor local (localhost).');
+                return;
+            }
+
             const { error } = await supabase.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
-                    redirectTo: window.location.href // Redirect back to this page
+                    redirectTo: window.location.origin + window.location.pathname
                 }
             });
             if (error) alert('Erro ao entrar com Google: ' + error.message);
         }
+
+        // Event Listeners
+        document.getElementById('google-login-btn').addEventListener('click', handleGoogleLogin);
 
         // PRODUCTS CRUD
         async function loadProducts() {
