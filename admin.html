@@ -466,13 +466,17 @@
         // LOGIN
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            logDiag('Tentativa de login iniciada...');
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
 
+            logDiag('Autenticando...');
             const { error } = await supabase.auth.signInWithPassword({ email, password });
             if (error) {
+                logDiag('❌ Erro no login: ' + error.message);
                 alert('Erro no login: ' + error.message);
             } else {
+                logDiag('✅ Login sucesso! Redirecionando...');
                 showAdmin();
             }
         });
