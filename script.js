@@ -1,7 +1,7 @@
 // ===== SUPABASE CONFIG =====
 const SUPABASE_URL = 'https://yjayutnbxfblzndtvqae.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlqYXl1dG5ieGZibHpuZHR2cWFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczMDAxMDQsImV4cCI6MjA4Mjg3NjEwNH0.JoD9XpHyRRL0bMZeIvKVtzriEIfqPm8EBAvNJ5bQtBA';
-const supabase = typeof supabase !== 'undefined' ?
+const sb = window.supabase ?
     window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
 // ===== DATA =====
@@ -216,9 +216,9 @@ window.addEventListener('scroll', () => {
 // Load from Supabase or use defaults
 async function loadArtworks() {
     try {
-        if (!supabase) throw new Error('Supabase not initialized');
+        if (!sb) throw new Error('Supabase not initialized');
 
-        const { data, error } = await supabase
+        const { data, error } = await sb
             .from('products')
             .select('*')
             .order('created_at', { ascending: false });
