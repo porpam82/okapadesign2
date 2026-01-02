@@ -406,7 +406,7 @@
         let isEditing = false;
 
         // Whitelist - Coloque aqui o email autorizado
-        const ALLOWED_EMAIL = 'p.morgado1982@gmail.com'; // Exemplo, o utilizador deve confirmar
+        const ALLOWED_EMAIL = 'admin@okapadesign.com';
 
         // AUTH CHECK
         async function checkUser() {
@@ -416,14 +416,14 @@
 
                 if (session) {
                     const userEmail = session.user.email;
-                    // Se quiser restringir a um email específico, descomente as linhas abaixo:
-                    /*
+
+                    // Restrição de Segurança: Apenas o email autorizado pode entrar
                     if (userEmail !== ALLOWED_EMAIL) {
-                        alert('Acesso negado para: ' + userEmail);
+                        alert('⛔ Acesso negado! O email ' + userEmail + ' não tem permissão de administrador.');
                         await supabase.auth.signOut();
                         return;
                     }
-                    */
+
                     showAdmin();
                 } else {
                     showAuth();
