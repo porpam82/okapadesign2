@@ -247,6 +247,12 @@
         <h1>Painel <span class="accent">Admin</span></h1>
         <p class="subtitle">Gerencie os produtos do seu site</p>
 
+        <!-- DIAGNOSTIC BAR -->
+        <div id="diag-bar"
+            style="background: #222; color: #fff; padding: 10px; margin-bottom: 20px; border: 1px solid #444; font-family: monospace; font-size: 12px;">
+            Status do Sistema: <span id="sys-status">Aguardando...</span>
+        </div>
+
         <!-- Auth Section -->
         <div id="auth-section" class="card" style="max-width: 400px; margin: 2rem auto;">
             <h2>🔐 Login Admin</h2>
@@ -381,12 +387,24 @@
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlqYXl1dG5ieGZibHpuZHR2cWFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczMDAxMDQsImV4cCI6MjA4Mjg3NjEwNH0.JoD9XpHyRRL0bMZeIvKVtzriEIfqPm8EBAvNJ5bQtBA';
 
         let supabase;
+        const diagStatus = document.getElementById('sys-status');
+
+        function logDiag(msg) {
+            console.log('[DIAG]', msg);
+            diagStatus.innerHTML += '<br>' + msg;
+            diagStatus.parentElement.style.borderColor = '#d4a574';
+        }
+
         try {
-            if (!window.supabase) throw new Error('SDK do Supabase não carregado!');
+            logDiag('Iniciando script...');
+            if (!window.supabase) throw new Error('SDK do Supabase não carregado (window.supabase is undefined)');
             supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-            console.log('Supabase: Cliente inicializado.');
+            logDiag('Supabase inicializado com sucesso.');
         } catch (e) {
             console.error('Erro ao inicializar Supabase:', e);
+            logDiag('❌ ERRO CRÍTICO: ' + e.message);
+            diagStatus.parentElement.style.borderColor = 'red';
+            diagStatus.parentElement.style.background = '#300';
             alert('Erro crítico: ' + e.message);
         }
 
