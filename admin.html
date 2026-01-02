@@ -261,6 +261,16 @@
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%;">Entrar</button>
             </form>
+            <div style="margin: 1.5rem 0; display: flex; align-items: center; gap: 1rem; color: #555;">
+                <hr style="flex: 1; border: 0; border-top: 1px solid #333;">
+                <span style="font-size: 0.8rem;">OU</span>
+                <hr style="flex: 1; border: 0; border-top: 1px solid #333;">
+            </div>
+            <button onclick="handleGoogleLogin()" class="btn"
+                style="width: 100%; background: #fff; color: #000; justify-content: center;">
+                <img src="https://www.google.com/favicon.ico" alt="Google" style="width: 16px; height: 16px;">
+                Entrar com Google
+            </button>
         </div>
 
         <!-- Main Admin Content (Hidden until login) -->
@@ -420,6 +430,16 @@
         async function handleLogout() {
             await supabase.auth.signOut();
             showAuth();
+        }
+
+        async function handleGoogleLogin() {
+            const { error } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: window.location.href // Redirect back to this page
+                }
+            });
+            if (error) alert('Erro ao entrar com Google: ' + error.message);
         }
 
         // PRODUCTS CRUD
