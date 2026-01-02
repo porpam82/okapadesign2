@@ -19,7 +19,7 @@ const submitBtn = document.getElementById('submit-btn');
 const cancelBtn = document.getElementById('cancel-edit');
 const googleBtn = document.getElementById('google-login-btn');
 
-let supabase;
+let sb; // Renamed from supabase to sb to avoid conflict
 let isEditing = false;
 const ALLOWED_EMAIL = 'admin@okapadesign.com';
 
@@ -41,7 +41,7 @@ async function init() {
             throw new Error('Supabase SDK não encontrado no window');
         }
 
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         logDiag('Supabase inicializado.');
 
         // Bind Events
@@ -73,7 +73,7 @@ async function handleLogin(e) {
     const password = document.getElementById('login-password').value;
 
     logDiag('Enviando pedido ao Supabase...');
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await sb.auth.signInWithPassword({ email, password });
 
     if (error) {
         logDiag('❌ Erro Supabase: ' + error.message);
@@ -100,7 +100,7 @@ async function handleGoogleLogin() {
         return;
     }
 
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { error } = await sb.auth.signInWithOAuth({
         provider: 'google',
         options: {
             redirectTo: window.location.origin + window.location.pathname
@@ -118,7 +118,7 @@ async function handleGoogleLogin() {
 
 async function checkUser() {
     logDiag('Verificando sessão...');
-    const { data: { session }, error } = await supabase.auth.getSession();
+    const { data: { session }, error } = await sb.auth.getSession();
 
     if (error) {
         logDiag('Erro sessão: ' + error.message);
@@ -133,7 +133,7 @@ async function checkUser() {
         if (userEmail !== ALLOWED_EMAIL) {
             logDiag('⛔ Bloqueado: ' + userEmail);
             alert('⛔ Acesso negado para ' + userEmail);
-            await supabase.auth.signOut();
+            await sb.auth.signOut();
             showAuth();
             return;
         }
@@ -146,7 +146,7 @@ async function checkUser() {
 }
 
 async function handleLogout() {
-    await supabase.auth.signOut();
+    await sb.auth.signOut();
     window.location.reload();
 }
 
@@ -165,7 +165,7 @@ function showAuth() {
 // Product Logic
 async function loadProducts() {
     logDiag('Carregando produtos...');
-    const { data, error } = await supabase
+    const { data, error } = await sb
         .from('products')
         .select('*')
         .order('created_at', { ascending: false });
@@ -215,13 +215,13 @@ async function handleProductSubmit(e) {
             const fileExt = file.name.split('.').pop();
             const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
 
-            const { error: uploadError } = await supabase.storage
+            const { error: uploadError } = await sb.storage
                 .from('product-images')
                 .upload(fileName, file);
 
             if (uploadError) throw uploadError;
 
-            const { data: { publicUrl } } = supabase.storage
+            const { data: { publicUrl } } = sb.storage
                 .from('product-images')
                 .getPublicUrl(fileName);
 
@@ -243,10 +243,10 @@ async function handleProductSubmit(e) {
         let error;
         if (isEditing) {
             const id = document.getElementById('product-id').value;
-            const { error: err } = await supabase.from('products').update(productData).eq('id', id);
+            const { error: err } = await sb.from('products').update(productData).eq('id', id);
             error = err;
         } else {
-            const { error: err } = await supabase.from('products').insert([productData]);
+            const { error: err } = await sb.from('products').insert([productData]);
             error = err;
         }
 
@@ -283,14 +283,14 @@ function handleCancelEdit() {
 // Global scope functions for HTML onclick attributes
 window.deleteProduct = async function (id) {
     if (confirm('Apagar produto?')) {
-        const { error } = await supabase.from('products').delete().eq('id', id);
+        const { error } = await sb.from('products').delete().eq('id', id);
         if (error) alert(error.message);
         else loadProducts();
     }
 };
 
 window.editProduct = function (id) {
-    supabase.from('products').select('*').eq('id', id).single().then(({ data }) => {
+    sb.from('products').select('*').eq('id', id).single().then(({ data }) => {
         if (data) {
             isEditing = true;
             if (formTitle) formTitle.textContent = '✏️ Editar Produto';
