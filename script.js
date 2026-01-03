@@ -336,11 +336,38 @@ function addToCart(id) {
 }
 
 // ===== CONTACT FORM =====
-contactForm?.addEventListener('submit', e => {
+// ===== CONTACT FORM =====
+contactForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const submitBtn = contactForm.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    
+    // UI Loading state
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando...';
+
     const name = document.getElementById('name').value;
-    alert(`Obrigado ${name}! A sua mensagem foi enviada.\n\nEsta é uma demonstração.`);
-    contactForm.reset();
+    const email = document.getElementById('email').value;
+    const message = document.getElementById('message').value;
+
+    try {
+        if (!sb) throw new Error('Supabase client not initialized');
+
+        const { data, error } = await sb.functions.invoke('send-email', {
+            body: { name, email, message }
+        });
+
+        if (error) throw error;
+
+        alert(`Obrigado ${name}! A sua mensagem foi enviada com sucesso.`);
+        contactForm.reset();
+    } catch (err) {
+        console.error('Error sending email:', err);
+        alert('Erro ao enviar mensagem. Por favor tente novamente ou use o email direto.');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+    }
 });
 
 // ===== SCROLL ANIMATIONS =====
