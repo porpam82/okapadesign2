@@ -359,8 +359,10 @@ ul {
 .modal__content {
     background: var(--color-bg);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 2rem;
-    max-width: 500px;
+    padding: 30px 60px;
+    /* Adjusted to requested dimensions (interpreted as padding) */
+    max-width: 600px;
+    /* Increased slightly to accommodate larger horizontal padding */
     width: 90%;
     position: relative;
     text-align: center;
