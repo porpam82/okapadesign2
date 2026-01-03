@@ -314,10 +314,9 @@ function openBuyModal(id) {
     if (!art) return;
 
     const modal = document.getElementById('buy-modal');
-    const productName = document.getElementById('modal-product-name');
     const emailBtn = document.getElementById('modal-email-btn');
 
-    productName.textContent = art.title;
+    // removed productName logic since it is no longer in HTML
 
     // Try to find an email in the description
     const emailMatch = art.desc.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})/);
