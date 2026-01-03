@@ -72,8 +72,8 @@ const translations = {
         'nav.about': 'Sobre',
         'nav.contact': 'Contato',
         'hero.subtitle': 'Pinturas Originais & Arte Digital',
-        'hero.title': 'Arte para o seu',
-        'hero.title_accent': 'espaço e estilo',
+        'hero.title': 'Arte é para',
+        'hero.title_accent': 'todos',
         'hero.desc': 'Quadros únicos e designs de lettering para t-shirts, garrafas térmicas e muito mais.',
         'hero.btn_shop': 'Ver Loja',
         'hero.btn_about': 'Sobre Mim',
@@ -112,8 +112,8 @@ const translations = {
         'nav.about': 'About',
         'nav.contact': 'Contact',
         'hero.subtitle': 'Original Paintings & Digital Art',
-        'hero.title': 'Art for your',
-        'hero.title_accent': 'space and style',
+        'hero.title': 'Art is for',
+        'hero.title_accent': 'everyone',
         'hero.desc': 'Unique paintings and lettering designs for t-shirts, water bottles and much more.',
         'hero.btn_shop': 'View Shop',
         'hero.btn_about': 'About Me',
@@ -341,7 +341,7 @@ contactForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const submitBtn = contactForm.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
-    
+
     // UI Loading state
     submitBtn.disabled = true;
     submitBtn.textContent = 'Enviando...';
