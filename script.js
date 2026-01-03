@@ -247,10 +247,14 @@ async function loadArtworks() {
 }
 
 // Helper to make links clickable
+// Helper to make links clickable (URLs and Emails)
 function linkify(text) {
     if (!text) return '';
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    return text.replace(urlRegex, url => `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color: var(--color-accent); text-decoration: underline;">${url}</a>`);
+    // URLs
+    let html = text.replace(/(https?:\/\/[^\s]+)/g, url => `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color: var(--color-accent); text-decoration: underline;">${url}</a>`);
+    // Emails
+    html = html.replace(/([a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})/g, email => `<a href="mailto:${email}" style="color: var(--color-accent); text-decoration: underline;">${email}</a>`);
+    return html;
 }
 
 function renderShop(filter = currentFilter, page = currentPage) {
