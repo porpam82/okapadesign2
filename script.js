@@ -379,103 +379,105 @@ window.closeBuyModal = closeBuyModal;
 function goToPage(page) {
     renderShop(currentFilter, page);
     document.getElementById('shop').scrollIntoView({ behavior: 'smooth' });
+}
+}
 
-    // ===== FILTERS =====
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            filterBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            renderShop(btn.dataset.filter, 1);
-        });
+// ===== FILTERS =====
+filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderShop(btn.dataset.filter, 1);
     });
+});
 
-    // ===== LIGHTBOX =====
-    function openLightbox(src, alt) {
-        lightboxImage.src = src;
-        lightboxImage.alt = alt;
-        lightboxImage.onerror = () => { lightboxImage.src = `https://placehold.co/800x600/1a1a1a/d4a574?text=${encodeURIComponent(alt)}`; };
-        lightbox.classList.add('active');
-        document.body.style.overflow = 'hidden';
+// ===== LIGHTBOX =====
+function openLightbox(src, alt) {
+    lightboxImage.src = src;
+    lightboxImage.alt = alt;
+    lightboxImage.onerror = () => { lightboxImage.src = `https://placehold.co/800x600/1a1a1a/d4a574?text=${encodeURIComponent(alt)}`; };
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+lightboxClose?.addEventListener('click', closeLightbox);
+lightbox?.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+function closeLightbox() {
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// ===== CART (SIMPLE) =====
+function addToCart(id) {
+    const art = artworks.find(a => a.id === id);
+    alert(`"${art.title}" adicionado ao carrinho!\n\nEsta é uma demonstração. Integre com um sistema de pagamento real.`);
+}
+
+// ===== CONTACT FORM =====
+// ===== CONTACT FORM =====
+contactForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const submitBtn = contactForm.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+
+    // UI Loading state
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando...';
+
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const message = document.getElementById('message').value;
+
+    try {
+        if (!sb) throw new Error('Supabase client not initialized');
+
+        const { data, error } = await sb.functions.invoke('send-email', {
+            body: { name, email, message }
+        });
+
+        if (error) throw error;
+
+        alert(`Obrigado ${name}! A sua mensagem foi enviada com sucesso.`);
+        contactForm.reset();
+    } catch (err) {
+        console.error('Error sending email:', err);
+        alert('Erro ao enviar mensagem. Por favor tente novamente ou use o email direto.');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
     }
+});
 
-    lightboxClose?.addEventListener('click', closeLightbox);
-    lightbox?.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
-
-    function closeLightbox() {
-        lightbox.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-
-    // ===== CART (SIMPLE) =====
-    function addToCart(id) {
-        const art = artworks.find(a => a.id === id);
-        alert(`"${art.title}" adicionado ao carrinho!\n\nEsta é uma demonstração. Integre com um sistema de pagamento real.`);
-    }
-
-    // ===== CONTACT FORM =====
-    // ===== CONTACT FORM =====
-    contactForm?.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const submitBtn = contactForm.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-
-        // UI Loading state
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Enviando...';
-
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const message = document.getElementById('message').value;
-
-        try {
-            if (!sb) throw new Error('Supabase client not initialized');
-
-            const { data, error } = await sb.functions.invoke('send-email', {
-                body: { name, email, message }
-            });
-
-            if (error) throw error;
-
-            alert(`Obrigado ${name}! A sua mensagem foi enviada com sucesso.`);
-            contactForm.reset();
-        } catch (err) {
-            console.error('Error sending email:', err);
-            alert('Erro ao enviar mensagem. Por favor tente novamente ou use o email direto.');
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalText;
+// ===== SCROLL ANIMATIONS =====
+const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
         }
     });
+}, observerOptions);
 
-    // ===== SCROLL ANIMATIONS =====
-    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
+document.querySelectorAll('.section').forEach(section => {
+    section.style.opacity = '0';
+    section.style.transform = 'translateY(30px)';
+    section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(section);
+});
 
-    document.querySelectorAll('.section').forEach(section => {
-        section.style.opacity = '0';
-        section.style.transform = 'translateY(30px)';
-        section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(section);
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize language
+    setLanguage(currentLang);
+
+    // Language switcher
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
     });
 
-    // ===== INIT =====
-    document.addEventListener('DOMContentLoaded', () => {
-        // Initialize language
-        setLanguage(currentLang);
-
-        // Language switcher
-        document.querySelectorAll('.lang-btn').forEach(btn => {
-            btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
-        });
-
-        // Load from Supabase
-        loadArtworks();
-    });
+    // Load from Supabase
+    loadArtworks();
+});
