@@ -434,9 +434,6 @@ function handleCancelEdit() {
     if (cancelBtn) cancelBtn.style.display = 'none';
     if (productForm) productForm.reset();
     document.getElementById('product-id').value = '';
-    // Reset tab button text
-    const addTabBtn = document.getElementById('add-tab-btn');
-    if (addTabBtn) addTabBtn.textContent = '➕ Adicionar Produto';
     // Switch back to products tab
     switchTab('products');
 }
@@ -472,9 +469,6 @@ window.editProduct = function (id) {
 
             // Switch to Add/Edit tab
             switchTab('addProduct');
-            // Update tab button text
-            const addTabBtn = document.getElementById('add-tab-btn');
-            if (addTabBtn) addTabBtn.textContent = '✏️ Editar Produto';
         }
     });
 };
