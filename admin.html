@@ -349,8 +349,12 @@
                         <div class="form-group">
                             <label>Imagem Principal / Capa (Cover) <small>Obrigatório</small></label>
                             <input type="file" id="image-file" accept="image/*">
-                            <input type="text" id="image-url" placeholder="URL da imagem (automático)" readonly
-                                required>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <input type="text" id="image-url" placeholder="URL da imagem (automático)" readonly
+                                    required style="flex:1">
+                                <button type="button" class="btn" style="background: #555; padding: 0 1rem;"
+                                    onclick="const url=document.getElementById('image-url').value; if(url) window.open(url, '_blank')">Ver</button>
+                            </div>
                             <small style="display:block; margin-top:5px; color:#888;">Se adicionar áudio/vídeo, esta
                                 imagem será usada como capa.</small>
                         </div>
@@ -358,7 +362,12 @@
                         <div class="form-group">
                             <label>Ficheiro de Media (Áudio/Vídeo) <small>Opcional</small></label>
                             <input type="file" id="media-file" accept="audio/*,video/*">
-                            <input type="text" id="media-url" placeholder="URL do media (automático)" readonly>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <input type="text" id="media-url" placeholder="URL do media (automático)" readonly
+                                    style="flex:1">
+                                <button type="button" class="btn" style="background: #555; padding: 0 1rem;"
+                                    onclick="const url=document.getElementById('media-url').value; if(url) window.open(url, '_blank')">Ver</button>
+                            </div>
                         </div>
                         <div id="upload-status" style="font-size: 0.8rem; margin-top: 0.5rem; color: #888;"></div>
 

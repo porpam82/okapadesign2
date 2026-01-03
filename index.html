@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="OkapaDesign - Pinturas Originais, Arte Digital e Lettering. Encontre quadros únicos e designs exclusivos para merchan, t-shirts e decoração. Arte é para todos.">
+        content="Loja online de arte original, quadros feitos por IA, música independente, sons para produtores e merchandising artístico. Produtos criativos exclusivos. | Online store for original art, AI-generated paintings, independent music, sound samples and artistic merchandise.">
     <meta name="keywords"
-        content="arte digital, pinturas originais, lettering, quadros, decoração, okapadesign, arte portugal, merchandising">
+        content="arte original, arte contemporânea, arte digital, arte feita por IA, arte gerada por inteligência artificial, quadros originais, quadros modernos, ilustrações artísticas, música independente, música digital, sons para produtores, efeitos sonoros, merchandising artístico, loja de arte online, loja criativa, marketplace de artistas, produtos criativos exclusivos, original art, contemporary art, AI generated art, digital art download, limited edition art prints, independent music, digital albums download, sound effects library, music samples pack, online art store, creative marketplace">
     <meta name="author" content="OkapaDesign">
 
     <!-- Open Graph / Facebook / WhatsApp -->
@@ -26,7 +26,7 @@
         content="Descubra pinturas originais e arte digital única. Transforme o seu espaço com designs exclusivos.">
     <meta property="twitter:image" content="https://okapadesign.com/assets/og-image.jpg">
 
-    <title>OkapaDesign | Pinturas & Arte Digital</title>
+    <title>Arte Original, IA, Música & Merchandising | Loja Criativa Online</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -188,6 +188,23 @@
     </div>
 
     <!-- Supabase SDK -->
+    <!-- Buy Info Modal -->
+    <div id="buy-modal" class="modal">
+        <div class="modal__content">
+            <button class="modal__close" onclick="closeBuyModal()">✕</button>
+            <h3 class="modal__title">Como encomendar</h3>
+            <div class="modal__body">
+                <p>Gostou do produto? Na <strong>OkapaDesign</strong> gostamos de tratar de cada encomenda pessoalmente.
+                </p>
+                <p>Assim, entre em contato via e-mail do autor ou para o e-mail geral.</p>
+                <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <a id="modal-email-btn" href="#" class="btn btn--primary"
+                        style="width: 100%; justify-content: center;">Enviar Email Agora</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="script.js"></script>
 </body>

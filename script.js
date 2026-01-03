@@ -287,7 +287,7 @@ function renderShop(filter = currentFilter, page = currentPage) {
                 <p class="product__description">${linkify(currentLang === 'en' && art.descEn ? art.descEn : art.desc)}</p>
                 <div class="product__footer">
                     <span class="product__price">€ ${art.price.toLocaleString()}</span>
-                    <button class="btn btn--small" onclick="addToCart(${art.id})">${translations[currentLang]['btn.buy']}</button>
+                    <button class="btn btn--small btn--buy" onclick="openBuyModal(${art.id})">${translations[currentLang]['btn.buy']}</button>
                 </div>
             </div>
         </article>
@@ -306,6 +306,33 @@ function renderShop(filter = currentFilter, page = currentPage) {
         paginationHTML += '</div>';
         shopGrid.insertAdjacentHTML('afterend', paginationHTML);
     }
+}
+
+// ===== BUY MODAL =====
+function openBuyModal(id) {
+    const art = artworks.find(a => a.id === id);
+    if (!art) return;
+
+    const modal = document.getElementById('buy-modal');
+    const productName = document.getElementById('modal-product-name');
+    const emailBtn = document.getElementById('modal-email-btn');
+
+    productName.textContent = art.title;
+
+    // Try to find an email in the description
+    const emailMatch = art.desc.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})/);
+    const targetEmail = emailMatch ? emailMatch[0] : 'okapadesign@gmail.com'; // Default email
+
+    const subject = encodeURIComponent(`Interesse em comprar: ${art.title}`);
+    const body = encodeURIComponent(`Olá, estou interessado no produto "${art.title}" (Ref: ${art.id}).\n\nPodem informar-me sobre o pagamento e envio?`);
+
+    emailBtn.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
+
+    modal.classList.add('active');
+}
+
+function closeBuyModal() {
+    document.getElementById('buy-modal').classList.remove('active');
 }
 
 function goToPage(page) {

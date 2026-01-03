@@ -1,0 +1,33 @@
+name: Weekly SEO Update
+
+on:
+  schedule:
+    - cron: '0 0 * * 0' # Every Sunday at midnight
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  update-seo:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Run SEO Update Script
+      env:
+        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      run: node .github/scripts/update_seo.js
+
+    - name: Commit and Push changes
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: "SEO: Automated keyword update based on latest products"
+        branch: main
