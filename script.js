@@ -246,6 +246,13 @@ async function loadArtworks() {
     renderShop();
 }
 
+// Helper to make links clickable
+function linkify(text) {
+    if (!text) return '';
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, url => `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color: var(--color-accent); text-decoration: underline;">${url}</a>`);
+}
+
 function renderShop(filter = currentFilter, page = currentPage) {
     currentFilter = filter;
     currentPage = page;
@@ -273,7 +280,7 @@ function renderShop(filter = currentFilter, page = currentPage) {
             }
                     </div>
                 ` : ''}
-                <p class="product__description">${currentLang === 'en' && art.descEn ? art.descEn : art.desc}</p>
+                <p class="product__description">${linkify(currentLang === 'en' && art.descEn ? art.descEn : art.desc)}</p>
                 <div class="product__footer">
                     <span class="product__price">€ ${art.price.toLocaleString()}</span>
                     <button class="btn btn--small" onclick="addToCart(${art.id})">${translations[currentLang]['btn.buy']}</button>
