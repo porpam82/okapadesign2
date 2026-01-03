@@ -287,7 +287,7 @@ function renderShop(filter = currentFilter, page = currentPage) {
                 <p class="product__description">${linkify(currentLang === 'en' && art.descEn ? art.descEn : art.desc)}</p>
                 <div class="product__footer">
                     <span class="product__price">€ ${art.price.toLocaleString()}</span>
-                    <button class="btn btn--small btn--buy" onclick="openBuyModal(${art.id})">${translations[currentLang]['btn.buy']}</button>
+                    <button class="btn btn--small btn--buy" onclick="openBuyModal('${art.id}')">${translations[currentLang]['btn.buy']}</button>
                 </div>
             </div>
         </article>
@@ -312,7 +312,7 @@ function renderShop(filter = currentFilter, page = currentPage) {
 function openBuyModal(id) {
     try {
         console.log('Opening modal for product:', id);
-        const art = artworks.find(a => a.id === id);
+        const art = artworks.find(a => a.id == id);
         if (!art) {
             console.error('Product not found:', id);
             return;
