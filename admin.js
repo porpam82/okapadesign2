@@ -169,6 +169,28 @@ function showAuth() {
 }
 
 // Product Logic
+let allProducts = [];
+let currentPage = 1;
+const ITEMS_PER_PAGE = 10;
+
+const searchInput = document.getElementById('search-products');
+const filterCategory = document.getElementById('filter-category');
+const paginationEl = document.getElementById('pagination');
+
+// Initialize search and filter listeners
+if (searchInput) {
+    searchInput.addEventListener('input', () => {
+        currentPage = 1;
+        renderProducts();
+    });
+}
+if (filterCategory) {
+    filterCategory.addEventListener('change', () => {
+        currentPage = 1;
+        renderProducts();
+    });
+}
+
 async function loadProducts() {
     logDiag('Carregando produtos...');
     const { data, error } = await sb
@@ -181,28 +203,107 @@ async function loadProducts() {
         return;
     }
 
-    if (countEl) countEl.textContent = data.length;
+    allProducts = data;
+    renderProducts();
+}
+
+function getFilteredProducts() {
+    let filtered = [...allProducts];
+
+    // Search filter
+    const searchTerm = searchInput?.value?.toLowerCase() || '';
+    if (searchTerm) {
+        filtered = filtered.filter(p =>
+            p.title?.toLowerCase().includes(searchTerm) ||
+            p.title_en?.toLowerCase().includes(searchTerm) ||
+            p.type?.toLowerCase().includes(searchTerm) ||
+            p.description?.toLowerCase().includes(searchTerm)
+        );
+    }
+
+    // Category filter
+    const category = filterCategory?.value || '';
+    if (category) {
+        filtered = filtered.filter(p => p.category === category);
+    }
+
+    return filtered;
+}
+
+function renderProducts() {
+    const filtered = getFilteredProducts();
+    const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    const paged = filtered.slice(start, start + ITEMS_PER_PAGE);
+
+    if (countEl) countEl.textContent = filtered.length;
+
+    const categoryLabels = {
+        paintings: 'Quadros',
+        lettering: 'Digital',
+        '3d': '2D/3D',
+        music: 'Música',
+        merch: 'Merch'
+    };
 
     if (productsList) {
-        if (data.length === 0) {
-            productsList.innerHTML = '<div class="empty">Nenhum produto cadastrado</div>';
+        if (filtered.length === 0) {
+            productsList.innerHTML = '<tr><td colspan="5" class="empty">Nenhum produto encontrado</td></tr>';
         } else {
-            productsList.innerHTML = data.map(p => `
-                <div class="product-item">
-                    <img src="${p.image_url}" alt="${p.title}" onerror="this.src='https://placehold.co/60x60/1a1a1a/d4a574?text=IMG'">
-                    <div class="product-info">
-                        <h4>${p.title} ${p.title_en ? '<span class="edit-badge">EN</span>' : ''}</h4>
-                        <p>${p.type || p.category} • €${p.price}</p>
-                    </div>
-                    <div style="display: flex; gap: 0.5rem;">
-                        <button class="btn" style="background: #333;" onclick="window.editProduct('${p.id}')">✏️</button>
-                        <button class="btn btn-danger" onclick="window.deleteProduct('${p.id}')">🗑</button>
-                    </div>
-                </div>
+            productsList.innerHTML = paged.map(p => `
+                <tr>
+                    <td><img src="${p.image_url}" alt="${p.title}" onerror="this.src='https://placehold.co/50x50/1a1a1a/d4a574?text=IMG'"></td>
+                    <td>
+                        <strong>${p.title}</strong>
+                        ${p.title_en ? '<span class="edit-badge" style="margin-left:5px">EN</span>' : ''}
+                        <br><small style="color:#888">${p.type || '-'}</small>
+                    </td>
+                    <td><span class="category-badge">${categoryLabels[p.category] || p.category}</span></td>
+                    <td style="color:#d4a574; font-weight:600">€${p.price}</td>
+                    <td>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn" style="background: #333; padding: 0.4rem 0.6rem;" onclick="window.editProduct('${p.id}')">✏️</button>
+                            <button class="btn btn-danger" style="padding: 0.4rem 0.6rem;" onclick="window.deleteProduct('${p.id}')">🗑</button>
+                        </div>
+                    </td>
+                </tr>
             `).join('');
         }
     }
+
+    // Render pagination
+    if (paginationEl && totalPages > 1) {
+        let paginationHTML = '';
+
+        // Previous button
+        paginationHTML += `<button ${currentPage === 1 ? 'disabled style="opacity:0.5"' : ''} onclick="window.goToPage(${currentPage - 1})">‹</button>`;
+
+        // Page numbers
+        for (let i = 1; i <= totalPages; i++) {
+            if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                paginationHTML += `<button class="${i === currentPage ? 'active' : ''}" onclick="window.goToPage(${i})">${i}</button>`;
+            } else if (i === currentPage - 2 || i === currentPage + 2) {
+                paginationHTML += `<button disabled style="border:none;background:none;color:#888">...</button>`;
+            }
+        }
+
+        // Next button
+        paginationHTML += `<button ${currentPage === totalPages ? 'disabled style="opacity:0.5"' : ''} onclick="window.goToPage(${currentPage + 1})">›</button>`;
+
+        paginationEl.innerHTML = paginationHTML;
+    } else if (paginationEl) {
+        paginationEl.innerHTML = '';
+    }
 }
+
+window.goToPage = function (page) {
+    const filtered = getFilteredProducts();
+    const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+    if (page >= 1 && page <= totalPages) {
+        currentPage = page;
+        renderProducts();
+    }
+};
 
 async function handleProductSubmit(e) {
     e.preventDefault();
