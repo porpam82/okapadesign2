@@ -209,11 +209,14 @@ async function handleProductSubmit(e) {
         let imageUrl = document.getElementById('image-url').value;
         const fileInput = document.getElementById('image-file');
 
+        let mediaUrl = document.getElementById('media-url').value;
+        const mediaInput = document.getElementById('media-file');
+
         if (fileInput.files.length > 0) {
-            if (uploadStatus) uploadStatus.textContent = '⏳ Uploading...';
+            if (uploadStatus) uploadStatus.textContent = '⏳ Uploading Image...';
             const file = fileInput.files[0];
             const fileExt = file.name.split('.').pop();
-            const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
+            const fileName = `img_${Math.random().toString(36).substring(2)}.${fileExt}`;
 
             const { error: uploadError } = await sb.storage
                 .from('product-images')
@@ -228,6 +231,25 @@ async function handleProductSubmit(e) {
             imageUrl = publicUrl;
         }
 
+        if (mediaInput.files.length > 0) {
+            if (uploadStatus) uploadStatus.textContent = '⏳ Uploading Media...';
+            const file = mediaInput.files[0];
+            const fileExt = file.name.split('.').pop();
+            const fileName = `media_${Math.random().toString(36).substring(2)}.${fileExt}`;
+
+            const { error: uploadError } = await sb.storage
+                .from('product-images') // User should ideally use a separate bucket or allow types here
+                .upload(fileName, file);
+
+            if (uploadError) throw uploadError;
+
+            const { data: { publicUrl } } = sb.storage
+                .from('product-images')
+                .getPublicUrl(fileName);
+
+            mediaUrl = publicUrl;
+        }
+
         const productData = {
             title: document.getElementById('title').value,
             title_en: document.getElementById('titleEn').value,
@@ -237,7 +259,8 @@ async function handleProductSubmit(e) {
             price: parseFloat(document.getElementById('price').value),
             description: document.getElementById('desc').value,
             description_en: document.getElementById('descEn').value,
-            image_url: imageUrl
+            image_url: imageUrl,
+            media_url: mediaUrl
         };
 
         let error;
@@ -307,6 +330,7 @@ window.editProduct = function (id) {
             document.getElementById('desc').value = data.description || '';
             document.getElementById('descEn').value = data.description_en || '';
             document.getElementById('image-url').value = data.image_url || '';
+            document.getElementById('media-url').value = data.media_url || '';
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }

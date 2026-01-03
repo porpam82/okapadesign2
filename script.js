@@ -236,7 +236,8 @@ async function loadArtworks() {
                 typeEn: item.type_en,
                 desc: item.description,
                 descEn: item.description_en,
-                image: item.image_url
+                image: item.image_url,
+                media: item.media_url
             }));
         }
     } catch (err) {
@@ -264,6 +265,14 @@ function renderShop(filter = currentFilter, page = currentPage) {
             <div class="product__info">
                 <span class="product__category">${translations[currentLang]['type.' + art.type] || art.type}</span>
                 <h3 class="product__title">${currentLang === 'en' && art.titleEn ? art.titleEn : art.title}</h3>
+                ${art.media ? `
+                    <div class="product__media" style="margin: 10px 0;">
+                        ${art.media.match(/\.(mp3|wav|ogg)$/i) ?
+                `<audio controls src="${art.media}" style="width: 100%; height: 30px;"></audio>` :
+                `<video controls src="${art.media}" style="width: 100%; max-height: 200px; border-radius: 4px;"></video>`
+            }
+                    </div>
+                ` : ''}
                 <p class="product__description">${currentLang === 'en' && art.descEn ? art.descEn : art.desc}</p>
                 <div class="product__footer">
                     <span class="product__price">€ ${art.price.toLocaleString()}</span>
