@@ -347,9 +347,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Imagem do Produto</label>
+                            <label>Imagem Principal / Capa (Cover) <small>Obrigatório</small></label>
                             <input type="file" id="image-file" accept="image/*">
-                            <input type="text" id="image-url" placeholder="URL da imagem (automático)" readonly>
+                            <input type="text" id="image-url" placeholder="URL da imagem (automático)" readonly
+                                required>
+                            <small style="display:block; margin-top:5px; color:#888;">Se adicionar áudio/vídeo, esta
+                                imagem será usada como capa.</small>
                         </div>
 
                         <div class="form-group">
