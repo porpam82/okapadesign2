@@ -23,7 +23,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -42,9 +42,50 @@
         }
 
         .grid {
+            display: block;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .tab-btn {
+            padding: 1rem 2rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #888;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .tab-btn:hover {
+            color: #d4a574;
+        }
+
+        .tab-btn.active {
+            color: #d4a574;
+            border-bottom-color: #d4a574;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 2rem 0;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
         }
 
         @media (max-width: 768px) {
@@ -402,136 +443,144 @@
                 ✅ Operação realizada com sucesso!
             </div>
 
-            <div class="grid">
-                <div class="card">
+            <!-- Tabs Navigation -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('products')">📦 Produtos (<span
+                        id="count">0</span>)</button>
+                <button class="tab-btn" onclick="switchTab('addProduct')" id="add-tab-btn">➕ Adicionar Produto</button>
+            </div>
+
+            <!-- Products Tab -->
+            <div id="tab-products" class="tab-content active">
+                <div class="search-bar">
+                    <input type="text" id="search-products" placeholder="🔍 Pesquisar produtos...">
+                    <select id="filter-category" style="width: auto;">
+                        <option value="">Todas categorias</option>
+                        <option value="paintings">Quadros</option>
+                        <option value="lettering">Digital</option>
+                        <option value="3d">2D/3D</option>
+                        <option value="music">Música</option>
+                        <option value="merch">Merch</option>
+                    </select>
+                </div>
+                <div class="products-wrapper" style="max-height: none;">
+                    <table class="products-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 60px;">Imagem</th>
+                                <th>Título</th>
+                                <th style="width: 100px;">Categoria</th>
+                                <th style="width: 80px;">Preço</th>
+                                <th style="width: 100px;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="products-list">
+                            <tr>
+                                <td colspan="5" class="empty">Carregando...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination" id="pagination"></div>
+            </div>
+
+            <!-- Add/Edit Product Tab -->
+            <div id="tab-addProduct" class="tab-content">
+                <div class="card" style="max-width: 900px; margin: 0 auto;">
                     <h2 id="form-title">➕ Adicionar Produto</h2>
                     <form id="product-form">
                         <input type="hidden" id="product-id">
 
-                        <div class="form-group">
-                            <label>Título (PT) *</label>
-                            <input type="text" id="title" required placeholder="Ex: Harmonia Abstrata">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Título (PT) *</label>
+                                <input type="text" id="title" required placeholder="Ex: Harmonia Abstrata">
+                            </div>
+                            <div class="form-group">
+                                <label>Title (EN)
+                                    <button type="button" class="btn-translate"
+                                        onclick="translateText('title', 'titleEn')">✨ Traduzir</button>
+                                </label>
+                                <input type="text" id="titleEn" placeholder="Ex: Abstract Harmony">
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label>Title (EN)
-                                <button type="button" class="btn-translate"
-                                    onclick="translateText('title', 'titleEn')">✨ Traduzir</button>
-                            </label>
-                            <input type="text" id="titleEn" placeholder="Ex: Abstract Harmony">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Categoria *</label>
+                                <select id="category" required>
+                                    <option value="paintings">Quadros</option>
+                                    <option value="lettering">Digital</option>
+                                    <option value="3d">2D/3D</option>
+                                    <option value="music">Música/Som</option>
+                                    <option value="merch">Merchandising</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Preço (€) *</label>
+                                <input type="number" id="price" required placeholder="Ex: 890">
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label>Categoria *</label>
-                            <select id="category" required>
-                                <option value="paintings">Quadros</option>
-                                <option value="lettering">Digital</option>
-                                <option value="3d">2D/3D</option>
-                                <option value="music">Música/Som</option>
-                                <option value="merch">Merchandising</option>
-                            </select>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Tipo (PT)</label>
+                                <input type="text" id="type" placeholder="Ex: Quadro Original">
+                            </div>
+                            <div class="form-group">
+                                <label>Type (EN)
+                                    <button type="button" class="btn-translate"
+                                        onclick="translateText('type', 'typeEn')">✨ Traduzir</button>
+                                </label>
+                                <input type="text" id="typeEn" placeholder="Ex: Original Painting">
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label>Tipo (PT)</label>
-                            <input type="text" id="type" placeholder="Ex: Quadro Original">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Type (EN)
-                                <button type="button" class="btn-translate" onclick="translateText('type', 'typeEn')">✨
-                                    Traduzir</button>
-                            </label>
-                            <input type="text" id="typeEn" placeholder="Ex: Original Painting">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Preço (€) *</label>
-                            <input type="number" id="price" required placeholder="Ex: 890">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Descrição (PT)</label>
-                            <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
-                                <textarea id="desc" rows="5" maxlength="800"
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Descrição (PT)</label>
+                                <textarea id="desc" rows="4" maxlength="800"
                                     placeholder="Descrição detalhada em Português" required></textarea>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Description (EN)
-                                <button type="button" class="btn-translate" onclick="translateText('desc', 'descEn')">✨
-                                    Traduzir</button>
-                            </label>
-                            <textarea id="descEn" placeholder="Ex: Acrylic on canvas"></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Imagem Principal / Capa (Cover) <small>Obrigatório</small></label>
-                            <input type="file" id="image-file" accept="image/*">
-                            <div style="display: flex; gap: 0.5rem;">
-                                <input type="text" id="image-url" placeholder="URL da imagem (automático)" readonly
-                                    required style="flex:1">
-                                <button type="button" class="btn" style="background: #555; padding: 0 1rem;"
-                                    onclick="const url=document.getElementById('image-url').value; if(url) window.open(url, '_blank')">Ver</button>
+                            <div class="form-group">
+                                <label>Description (EN)
+                                    <button type="button" class="btn-translate"
+                                        onclick="translateText('desc', 'descEn')">✨ Traduzir</button>
+                                </label>
+                                <textarea id="descEn" rows="4" placeholder="Ex: Acrylic on canvas"></textarea>
                             </div>
-                            <small style="display:block; margin-top:5px; color:#888;">Se adicionar áudio/vídeo, esta
-                                imagem será usada como capa.</small>
                         </div>
 
-                        <div class="form-group">
-                            <label>Ficheiro de Media (Áudio/Vídeo) <small>Opcional</small></label>
-                            <input type="file" id="media-file" accept="audio/*,video/*">
-                            <div style="display: flex; gap: 0.5rem;">
-                                <input type="text" id="media-url" placeholder="URL do media (automático)" readonly
-                                    style="flex:1">
-                                <button type="button" class="btn" style="background: #555; padding: 0 1rem;"
-                                    onclick="const url=document.getElementById('media-url').value; if(url) window.open(url, '_blank')">Ver</button>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Imagem Principal / Capa <small>Obrigatório</small></label>
+                                <input type="file" id="image-file" accept="image/*">
+                                <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                                    <input type="text" id="image-url" placeholder="URL da imagem (automático)" readonly
+                                        required style="flex:1">
+                                    <button type="button" class="btn" style="background: #555; padding: 0 1rem;"
+                                        onclick="let u=document.getElementById('image-url').value; if(u) window.open(u, '_blank')">Ver</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Ficheiro de Media (Áudio/Vídeo) <small>Opcional</small></label>
+                                <input type="file" id="media-file" accept="audio/*,video/*">
+                                <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                                    <input type="text" id="media-url" placeholder="URL do media (automático)" readonly
+                                        style="flex:1">
+                                    <button type="button" class="btn" style="background: #555; padding: 0 1rem;"
+                                        onclick="let m=document.getElementById('media-url').value; if(m) window.open(m, '_blank')">Ver</button>
+                                </div>
                             </div>
                         </div>
                         <div id="upload-status" style="font-size: 0.8rem; margin-top: 0.5rem; color: #888;"></div>
 
-
-                        <div style="display: flex; gap: 1rem;">
+                        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
                             <button type="submit" id="submit-btn" class="btn btn-primary">Salvar Produto</button>
                             <button type="button" id="cancel-edit" class="btn"
                                 style="background: #333; display: none;">Cancelar</button>
                         </div>
                     </form>
-                </div>
-
-                <div class="card">
-                    <h2>📦 Produtos (<span id="count">0</span>)</h2>
-                    <div class="search-bar">
-                        <input type="text" id="search-products" placeholder="🔍 Pesquisar produtos...">
-                        <select id="filter-category" style="width: auto;">
-                            <option value="">Todas categorias</option>
-                            <option value="paintings">Quadros</option>
-                            <option value="lettering">Digital</option>
-                            <option value="3d">2D/3D</option>
-                            <option value="music">Música</option>
-                            <option value="merch">Merch</option>
-                        </select>
-                    </div>
-                    <div class="products-wrapper">
-                        <table class="products-table">
-                            <thead>
-                                <tr>
-                                    <th>Imagem</th>
-                                    <th>Título</th>
-                                    <th>Categoria</th>
-                                    <th>Preço</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody id="products-list">
-                                <tr>
-                                    <td colspan="5" class="empty">Carregando...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="pagination" id="pagination"></div>
                 </div>
             </div>
 

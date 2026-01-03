@@ -168,6 +168,32 @@ function showAuth() {
     if (adminContent) adminContent.style.display = 'none';
 }
 
+// Tab switching
+function switchTab(tabName) {
+    // Hide all tabs
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    // Deactivate all tab buttons
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+
+    // Show selected tab
+    const selectedTab = document.getElementById('tab-' + tabName);
+    if (selectedTab) selectedTab.classList.add('active');
+
+    // Activate corresponding button
+    const buttons = document.querySelectorAll('.tab-btn');
+    buttons.forEach(btn => {
+        if ((tabName === 'products' && btn.textContent.includes('Produtos')) ||
+            (tabName === 'addProduct' && btn.textContent.includes('Adicionar'))) {
+            btn.classList.add('active');
+        }
+    });
+}
+window.switchTab = switchTab;
+
 // Product Logic
 let allProducts = [];
 let currentPage = 1;
@@ -408,6 +434,11 @@ function handleCancelEdit() {
     if (cancelBtn) cancelBtn.style.display = 'none';
     if (productForm) productForm.reset();
     document.getElementById('product-id').value = '';
+    // Reset tab button text
+    const addTabBtn = document.getElementById('add-tab-btn');
+    if (addTabBtn) addTabBtn.textContent = '➕ Adicionar Produto';
+    // Switch back to products tab
+    switchTab('products');
 }
 
 // Global scope functions for HTML onclick attributes
@@ -439,7 +470,11 @@ window.editProduct = function (id) {
             document.getElementById('image-url').value = data.image_url || '';
             document.getElementById('media-url').value = data.media_url || '';
 
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // Switch to Add/Edit tab
+            switchTab('addProduct');
+            // Update tab button text
+            const addTabBtn = document.getElementById('add-tab-btn');
+            if (addTabBtn) addTabBtn.textContent = '✏️ Editar Produto';
         }
     });
 };
