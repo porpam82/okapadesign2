@@ -310,29 +310,46 @@ function renderShop(filter = currentFilter, page = currentPage) {
 
 // ===== BUY MODAL =====
 function openBuyModal(id) {
-    const art = artworks.find(a => a.id === id);
-    if (!art) return;
+    try {
+        console.log('Opening modal for product:', id);
+        const art = artworks.find(a => a.id === id);
+        if (!art) {
+            console.error('Product not found:', id);
+            return;
+        }
 
-    const modal = document.getElementById('buy-modal');
-    const emailBtn = document.getElementById('modal-email-btn');
+        const modal = document.getElementById('buy-modal');
+        const emailBtn = document.getElementById('modal-email-btn');
 
-    // removed productName logic since it is no longer in HTML
+        if (!modal || !emailBtn) {
+            console.error('Modal elements missing!');
+            alert('Erro interno: Elementos do modal não encontrados.');
+            return;
+        }
 
-    // Try to find an email in the description
-    const emailMatch = art.desc.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})/);
-    const targetEmail = emailMatch ? emailMatch[0] : 'okapadesign@gmail.com'; // Default email
+        // Try to find an email in the description
+        const emailMatch = art.desc.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})/);
+        const targetEmail = emailMatch ? emailMatch[0] : 'okapadesign@gmail.com'; // Default email
 
-    const subject = encodeURIComponent(`Interesse em comprar: ${art.title}`);
-    const body = encodeURIComponent(`Olá, estou interessado no produto "${art.title}" (Ref: ${art.id}).\n\nPodem informar-me sobre o pagamento e envio?`);
+        const subject = encodeURIComponent(`Interesse em comprar: ${art.title}`);
+        const body = encodeURIComponent(`Olá, estou interessado no produto "${art.title}" (Ref: ${art.id}).\n\nPodem informar-me sobre o pagamento e envio?`);
 
-    emailBtn.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
+        emailBtn.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
 
-    modal.classList.add('active');
+        modal.classList.add('active');
+    } catch (e) {
+        console.error('Modal Error:', e);
+        alert('Erro ao abrir modal: ' + e.message);
+    }
 }
+// Make globally accessible
+window.openBuyModal = openBuyModal;
 
 function closeBuyModal() {
-    document.getElementById('buy-modal').classList.remove('active');
+    const modal = document.getElementById('buy-modal');
+    if (modal) modal.classList.remove('active');
 }
+window.closeBuyModal = closeBuyModal;
 
 function goToPage(page) {
     renderShop(currentFilter, page);
