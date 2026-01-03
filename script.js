@@ -287,7 +287,7 @@ function renderShop(filter = currentFilter, page = currentPage) {
                 <p class="product__description">${linkify(currentLang === 'en' && art.descEn ? art.descEn : art.desc)}</p>
                 <div class="product__footer">
                     <span class="product__price">€ ${art.price.toLocaleString()}</span>
-                    <button class="btn btn--small btn--buy js-buy-btn" data-id="${art.id}">${translations[currentLang]['btn.buy']}</button>
+                    <button class="btn btn--small btn--buy" onclick="openBuyModal(${art.id})">${translations[currentLang]['btn.buy']}</button>
                 </div>
             </div>
         </article>
@@ -309,35 +309,12 @@ function renderShop(filter = currentFilter, page = currentPage) {
 }
 
 // ===== BUY MODAL =====
-// Event Delegation Pattern to avoid inline onclick reference errors
-document.addEventListener('click', (e) => {
-    // Handle Buy Button Click
-    if (e.target.closest('.js-buy-btn')) {
-        const btn = e.target.closest('.js-buy-btn');
-        const id = btn.dataset.id;
-        openBuyModal(id);
-    }
-    // Handle Close Button Click
-    if (e.target.closest('.modal__close') || e.target.classList.contains('modal')) {
-        closeBuyModal();
-    }
-});
-
-function openBuyModal(rawId) {
+function openBuyModal(id) {
     try {
-        console.log('Attempting to open modal for ID:', rawId);
-
-        let id = rawId;
-        // Try to convert to number if possible to match artworks array
-        if (!isNaN(rawId)) {
-            id = Number(rawId);
-        }
-
-        const art = artworks.find(a => a.id == id); // Abstract equality to match string/number
-
+        console.log('Opening modal for product:', id);
+        const art = artworks.find(a => a.id === id);
         if (!art) {
-            console.error('Product not found for ID:', id);
-            alert('Produto não encontrado. ID: ' + id);
+            console.error('Product not found:', id);
             return;
         }
 
@@ -345,13 +322,14 @@ function openBuyModal(rawId) {
         const emailBtn = document.getElementById('modal-email-btn');
 
         if (!modal || !emailBtn) {
-            alert('Erro interno: Modal não encontrado.');
+            console.error('Modal elements missing!');
+            alert('Erro interno: Elementos do modal não encontrados.');
             return;
         }
 
         // Try to find an email in the description
         const emailMatch = art.desc.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})/);
-        const targetEmail = emailMatch ? emailMatch[0] : 'okapadesign@gmail.com';
+        const targetEmail = emailMatch ? emailMatch[0] : 'okapadesign@gmail.com'; // Default email
 
         const subject = encodeURIComponent(`Interesse em comprar: ${art.title}`);
         const body = encodeURIComponent(`Olá, estou interessado no produto "${art.title}" (Ref: ${art.id}).\n\nPodem informar-me sobre o pagamento e envio?`);
@@ -359,27 +337,23 @@ function openBuyModal(rawId) {
         emailBtn.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
 
         modal.classList.add('active');
-        console.log('Modal opened successfully');
-
     } catch (e) {
-        console.error('Critical Modal Error:', e);
-        alert('Erro ao abrir janela de compra: ' + e.message);
+        console.error('Modal Error:', e);
+        alert('Erro ao abrir modal: ' + e.message);
     }
 }
+// Make globally accessible
+window.openBuyModal = openBuyModal;
 
 function closeBuyModal() {
     const modal = document.getElementById('buy-modal');
     if (modal) modal.classList.remove('active');
 }
-
-// Global expose for backup
-window.openBuyModal = openBuyModal;
 window.closeBuyModal = closeBuyModal;
 
 function goToPage(page) {
     renderShop(currentFilter, page);
     document.getElementById('shop').scrollIntoView({ behavior: 'smooth' });
-}
 }
 
 // ===== FILTERS =====
