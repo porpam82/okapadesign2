@@ -21,7 +21,6 @@ const googleBtn = document.getElementById('google-login-btn');
 
 let sb; // Renamed from supabase to sb to avoid conflict
 let isEditing = false;
-const ALLOWED_EMAIL = 'admin@okapadesign.com';
 
 // Helpers
 function logDiag(msg) {
@@ -130,7 +129,14 @@ async function checkUser() {
         const userEmail = session.user.email;
         logDiag('Utilizador detetado: ' + userEmail);
 
-        if (userEmail !== ALLOWED_EMAIL) {
+        // Check if user is in admins table
+        const { data: adminData, error: adminError } = await sb
+            .from('admins')
+            .select('email')
+            .eq('email', userEmail)
+            .single();
+
+        if (adminError || !adminData) {
             logDiag('⛔ Bloqueado: ' + userEmail);
             alert('⛔ Acesso negado para ' + userEmail);
             await sb.auth.signOut();
