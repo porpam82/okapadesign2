@@ -5,4 +5,4 @@ Allow: /
 Disallow: /admin.html
 
 # Sitemap location
-Sitemap: https://porpam82.github.io/okapadesign2/sitemap.xml
+Sitemap: https://okapadesign.com/sitemap.xml
