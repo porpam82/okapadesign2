@@ -522,7 +522,7 @@ window.generateSitemap = async function () {
         logDiag('Gerando sitemap...');
         const { data, error } = await sb
             .from('products')
-            .select('id, updated_at')
+            .select('id, created_at')
             .order('created_at', { ascending: false });
 
         if (error) throw error;
@@ -539,7 +539,7 @@ window.generateSitemap = async function () {
 
         // Products
         data.forEach(p => {
-            const date = p.updated_at ? new Date(p.updated_at).toISOString() : now;
+            const date = p.created_at ? new Date(p.created_at).toISOString() : now;
             xml += `  <url>\n    <loc>${baseUrl}/?product=${p.id}</loc>\n    <lastmod>${date}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n`;
         });
 
