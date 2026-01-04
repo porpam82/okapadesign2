@@ -303,9 +303,10 @@ function linkify(text) {
     const fieldPatterns = [
         'Theme', 'Author', 'Dimensions', 'Style', 'Type', 'Technique',
         'Place of use', 'Sensations', 'Cost without postage and frame \\(€\\)',
-        'Cost without postage and frame', 'Contact',
+        'Cost without postage and frame', 'Cost excluding shipping and frame \\(€\\)',
+        'Cost excluding shipping and frame', 'Cost', 'Contact',
         'Tema', 'Autor', 'Dimensões', 'Estilo', 'Tipo',
-        'Técnica', 'Local de uso', 'Sensações',
+        'Técnica', 'Local de uso', 'Sensações', 'Usable in', 'Feelings',
         'Custo sem portes e moldura \\(€\\)', 'Custo sem portes e moldura',
         'Contato', 'Contacto', 'Size', 'Material', 'Format', 'Duration',
         'Tamanho', 'Formato', 'Duração', 'Price', 'Preço'
