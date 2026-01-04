@@ -123,7 +123,8 @@ const translations = {
         'contact.email_label': 'Email',
         'contact.location_label': 'Localização',
         'contact.location_value': 'Lisboa, Portugal',
-        'footer.tagline': 'Pinturas e arte digital para seu espaço e estilo.'
+        'footer.tagline': 'Pinturas e arte digital para seu espaço e estilo.',
+        'footer.copyright': '© 2026 okapadesign. Todos os direitos reservados.'
     },
     en: {
         'nav.home': 'Home',
@@ -182,7 +183,8 @@ const translations = {
         'contact.email_label': 'Email',
         'contact.location_label': 'Location',
         'contact.location_value': 'Lisbon, Portugal',
-        'footer.tagline': 'Paintings and digital art for your space and style.'
+        'footer.tagline': 'Paintings and digital art for your space and style.',
+        'footer.copyright': '© 2026 okapadesign. All rights reserved.'
     }
 };
 
