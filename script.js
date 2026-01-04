@@ -278,11 +278,11 @@ function linkify(text) {
     });
 
     if (hasStructuredFields) {
-        // Replace ". " followed by a field name with line break - handle comma separators too
+        // Replace field names with line break - handle various separators including after numbers
         fieldPatterns.forEach(field => {
-            // Match field after period, comma, or space
-            const regex = new RegExp(`[.,]\\s*(${field}\\s*:)`, 'gi');
-            formattedText = formattedText.replace(regex, '<br><span style="color: #d4a574; font-weight: 600;">$1</span>');
+            // Match field after period, comma, space, or number (but not at start of string)
+            const regex = new RegExp(`([.,\\d])\\s+(${field}\\s*:)`, 'gi');
+            formattedText = formattedText.replace(regex, '$1<br><span style="color: #d4a574; font-weight: 600;">$2</span>');
         });
 
         // Handle first field (at the very beginning)
