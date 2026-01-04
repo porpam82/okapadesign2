@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Block admin page from indexing
+Disallow: /admin.html
+
+# Sitemap location
+Sitemap: https://porpam82.github.io/okapadesign2/sitemap.xml
