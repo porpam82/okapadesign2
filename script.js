@@ -1,8 +1,9 @@
 // ===== SUPABASE CONFIG =====
+// ===== SUPABASE CONFIG =====
 const SUPABASE_URL = 'https://yjayutnbxfblzndtvqae.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlqYXl1dG5ieGZibHpuZHR2cWFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczMDAxMDQsImV4cCI6MjA4Mjg3NjEwNH0.JoD9XpHyRRL0bMZeIvKVtzriEIfqPm8EBAvNJ5bQtBA';
-const sb = window.supabase ?
-    window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+const FUNCTIONS_URL = `${SUPABASE_URL}/functions/v1`;
+// Public key removed - using Edge Functions for security
+const sb = null; // Removed client usage
 
 // ===== DATA =====
 let artworks = []; // Will be loaded from Supabase
@@ -264,14 +265,10 @@ window.addEventListener('scroll', () => {
 // Load from Supabase or use defaults
 async function loadArtworks() {
     try {
-        if (!sb) throw new Error('Supabase not initialized');
+        const response = await fetch(`${FUNCTIONS_URL}/get-products`);
+        if (!response.ok) throw new Error('Network response was not ok');
 
-        const { data, error } = await sb
-            .from('products')
-            .select('*')
-            .order('created_at', { ascending: false });
-
-        if (error) throw error;
+        const data = await response.json();
 
         if (data && data.length > 0) {
             artworks = data.map(item => ({
@@ -289,7 +286,7 @@ async function loadArtworks() {
             }));
         }
     } catch (err) {
-        console.error('Error loading from Supabase:', err);
+        console.error('Error loading from Supabase Functions:', err);
     }
     renderShop();
 }
@@ -510,13 +507,16 @@ contactForm?.addEventListener('submit', async (e) => {
     const message = document.getElementById('message').value;
 
     try {
-        if (!sb) throw new Error('Supabase client not initialized');
-
-        const { data, error } = await sb.functions.invoke('send-email', {
-            body: { name, email, message }
+        const response = await fetch(`${FUNCTIONS_URL}/send-email`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, message })
         });
 
-        if (error) throw error;
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to send email');
+        }
 
         alert(`Obrigado ${name}! A sua mensagem foi enviada com sucesso.`);
         contactForm.reset();
