@@ -84,7 +84,7 @@ const translations = {
         'filter.digital': 'Digital',
         'filter.music': 'Música/Som',
         'about.subtitle': 'Sobre o Artista',
-        'about.title': 'Olá, sou o criador da okapadesign',
+        'about.title': 'Olá, sou a criadora da okapadesign',
         'contact.subtitle': 'Contato',
         'contact.title': 'Vamos Conversar',
         'btn.buy': 'Comprar',
