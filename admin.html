@@ -469,6 +469,7 @@
                             <tr>
                                 <th style="width: 60px;">Imagem</th>
                                 <th>Título</th>
+                                <th style="width: 35%;">Descrição</th>
                                 <th style="width: 100px;">Categoria</th>
                                 <th style="width: 80px;">Preço</th>
                                 <th style="width: 100px;">Ações</th>
@@ -481,112 +482,127 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="pagination" id="pagination"></div>
             </div>
-
-            <!-- Add/Edit Product Tab -->
-            <div id="tab-addProduct" class="tab-content">
-                <div class="card" style="max-width: 900px; margin: 0 auto;">
-                    <h2 id="form-title">➕ Adicionar Produto</h2>
-                    <form id="product-form">
-                        <input type="hidden" id="product-id">
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Título (PT) *</label>
-                                <input type="text" id="title" required placeholder="Ex: Harmonia Abstrata">
-                            </div>
-                            <div class="form-group">
-                                <label>Title (EN)
-                                    <button type="button" class="btn-translate"
-                                        onclick="translateText('title', 'titleEn')">✨ Traduzir</button>
-                                </label>
-                                <input type="text" id="titleEn" placeholder="Ex: Abstract Harmony">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Categoria *</label>
-                                <select id="category" required>
-                                    <option value="paintings">Quadros</option>
-                                    <option value="lettering">Digital</option>
-                                    <option value="3d">2D/3D</option>
-                                    <option value="music">Música/Som</option>
-                                    <option value="merch">Merchandising</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Preço (€) *</label>
-                                <input type="number" id="price" required placeholder="Ex: 890">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Tipo (PT)</label>
-                                <input type="text" id="type" placeholder="Ex: Quadro Original">
-                            </div>
-                            <div class="form-group">
-                                <label>Type (EN)
-                                    <button type="button" class="btn-translate"
-                                        onclick="translateText('type', 'typeEn')">✨ Traduzir</button>
-                                </label>
-                                <input type="text" id="typeEn" placeholder="Ex: Original Painting">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Descrição (PT)</label>
-                                <textarea id="desc" rows="4" maxlength="800"
-                                    placeholder="Descrição detalhada em Português" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Description (EN)
-                                    <button type="button" class="btn-translate"
-                                        onclick="translateText('desc', 'descEn')">✨ Traduzir</button>
-                                </label>
-                                <textarea id="descEn" rows="4" placeholder="Ex: Acrylic on canvas"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Imagem Principal / Capa <small>Obrigatório</small></label>
-                                <input type="file" id="image-file" accept="image/*">
-                                <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
-                                    <input type="text" id="image-url" placeholder="URL da imagem (automático)" readonly
-                                        required style="flex:1">
-                                    <button type="button" class="btn" style="background: #555; padding: 0 1rem;"
-                                        onclick="let u=document.getElementById('image-url').value; if(u) window.open(u, '_blank')">Ver</button>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Ficheiro de Media (Áudio/Vídeo) <small>Opcional</small></label>
-                                <input type="file" id="media-file" accept="audio/*,video/*">
-                                <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
-                                    <input type="text" id="media-url" placeholder="URL do media (automático)" readonly
-                                        style="flex:1">
-                                    <button type="button" class="btn" style="background: #555; padding: 0 1rem;"
-                                        onclick="let m=document.getElementById('media-url').value; if(m) window.open(m, '_blank')">Ver</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="upload-status" style="font-size: 0.8rem; margin-top: 0.5rem; color: #888;"></div>
-
-                        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-                            <button type="submit" id="submit-btn" class="btn btn-primary">Salvar Produto</button>
-                            <button type="button" id="cancel-edit" class="btn"
-                                style="background: #333; display: none;">Cancelar</button>
-                        </div>
-                    </form>
+            <div class="pagination-container"
+                style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+                <div class="items-controller"
+                    style="display: flex; align-items: center; gap: 0.5rem; color: #888; font-size: 0.9rem;">
+                    <label>Mostrar:</label>
+                    <select id="itemsPerPage"
+                        style="width: auto; padding: 0.4rem; background: #0a0a0a; border: 1px solid #333; color: #f5f5f5; border-radius: 4px;">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="all">Todos</option>
+                    </select>
                 </div>
+                <div class="pagination" id="pagination" style="margin-top: 0;"></div>
             </div>
-
-            <button onclick="handleLogout()" class="btn" style="background: #333; margin-top: 2rem;">Sair do
-                Painel</button>
         </div>
+
+        <!-- Add/Edit Product Tab -->
+        <div id="tab-addProduct" class="tab-content">
+            <div class="card" style="max-width: 900px; margin: 0 auto;">
+                <h2 id="form-title">➕ Adicionar Produto</h2>
+                <form id="product-form">
+                    <input type="hidden" id="product-id">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Título (PT) *</label>
+                            <input type="text" id="title" required placeholder="Ex: Harmonia Abstrata">
+                        </div>
+                        <div class="form-group">
+                            <label>Title (EN)
+                                <button type="button" class="btn-translate"
+                                    onclick="translateText('title', 'titleEn')">✨ Traduzir</button>
+                            </label>
+                            <input type="text" id="titleEn" placeholder="Ex: Abstract Harmony">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Categoria *</label>
+                            <select id="category" required>
+                                <option value="paintings">Quadros</option>
+                                <option value="lettering">Digital</option>
+                                <option value="3d">2D/3D</option>
+                                <option value="music">Música/Som</option>
+                                <option value="merch">Merchandising</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Preço (€) *</label>
+                            <input type="number" id="price" required placeholder="Ex: 890">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Tipo (PT)</label>
+                            <input type="text" id="type" placeholder="Ex: Quadro Original">
+                        </div>
+                        <div class="form-group">
+                            <label>Type (EN)
+                                <button type="button" class="btn-translate" onclick="translateText('type', 'typeEn')">✨
+                                    Traduzir</button>
+                            </label>
+                            <input type="text" id="typeEn" placeholder="Ex: Original Painting">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Descrição (PT)</label>
+                            <textarea id="desc" rows="4" maxlength="800" placeholder="Descrição detalhada em Português"
+                                required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Description (EN)
+                                <button type="button" class="btn-translate" onclick="translateText('desc', 'descEn')">✨
+                                    Traduzir</button>
+                            </label>
+                            <textarea id="descEn" rows="4" placeholder="Ex: Acrylic on canvas"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Imagem Principal / Capa <small>Obrigatório</small></label>
+                            <input type="file" id="image-file" accept="image/*">
+                            <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                                <input type="text" id="image-url" placeholder="URL da imagem (automático)" readonly
+                                    required style="flex:1">
+                                <button type="button" class="btn" style="background: #555; padding: 0 1rem;"
+                                    onclick="let u=document.getElementById('image-url').value; if(u) window.open(u, '_blank')">Ver</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Ficheiro de Media (Áudio/Vídeo) <small>Opcional</small></label>
+                            <input type="file" id="media-file" accept="audio/*,video/*">
+                            <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                                <input type="text" id="media-url" placeholder="URL do media (automático)" readonly
+                                    style="flex:1">
+                                <button type="button" class="btn" style="background: #555; padding: 0 1rem;"
+                                    onclick="let m=document.getElementById('media-url').value; if(m) window.open(m, '_blank')">Ver</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="upload-status" style="font-size: 0.8rem; margin-top: 0.5rem; color: #888;"></div>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                        <button type="submit" id="submit-btn" class="btn btn-primary">Salvar Produto</button>
+                        <button type="button" id="cancel-edit" class="btn"
+                            style="background: #333; display: none;">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <button onclick="handleLogout()" class="btn" style="background: #333; margin-top: 2rem;">Sair do
+            Painel</button>
+    </div>
     </div>
 
     <!-- Supabase SDK -->

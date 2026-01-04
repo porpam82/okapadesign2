@@ -197,7 +197,7 @@ window.switchTab = switchTab;
 // Product Logic
 let allProducts = [];
 let currentPage = 1;
-const ITEMS_PER_PAGE = 10;
+let itemsPerPage = 10;
 
 const searchInput = document.getElementById('search-products');
 const filterCategory = document.getElementById('filter-category');
@@ -212,6 +212,16 @@ if (searchInput) {
 }
 if (filterCategory) {
     filterCategory.addEventListener('change', () => {
+        currentPage = 1;
+        renderProducts();
+    });
+}
+
+const itemsPerPageSelect = document.getElementById('itemsPerPage');
+if (itemsPerPageSelect) {
+    itemsPerPageSelect.addEventListener('change', (e) => {
+        const val = e.target.value;
+        itemsPerPage = val === 'all' ? 999999 : parseInt(val);
         currentPage = 1;
         renderProducts();
     });
@@ -258,9 +268,9 @@ function getFilteredProducts() {
 
 function renderProducts() {
     const filtered = getFilteredProducts();
-    const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
-    const start = (currentPage - 1) * ITEMS_PER_PAGE;
-    const paged = filtered.slice(start, start + ITEMS_PER_PAGE);
+    const totalPages = Math.ceil(filtered.length / itemsPerPage);
+    const start = (currentPage - 1) * itemsPerPage;
+    const paged = filtered.slice(start, start + itemsPerPage);
 
     if (countEl) countEl.textContent = filtered.length;
 
@@ -274,7 +284,7 @@ function renderProducts() {
 
     if (productsList) {
         if (filtered.length === 0) {
-            productsList.innerHTML = '<tr><td colspan="5" class="empty">Nenhum produto encontrado</td></tr>';
+            productsList.innerHTML = '<tr><td colspan="6" class="empty">Nenhum produto encontrado</td></tr>';
         } else {
             productsList.innerHTML = paged.map(p => `
                 <tr>
@@ -283,6 +293,11 @@ function renderProducts() {
                         <strong>${p.title}</strong>
                         ${p.title_en ? '<span class="edit-badge" style="margin-left:5px">EN</span>' : ''}
                         <br><small style="color:#888">${p.type || '-'}</small>
+                    </td>
+                    <td>
+                        <small style="display:block; max-height: 4.5em; overflow: hidden; color: #aaa; line-height: 1.4;">
+                            ${p.description ? (p.description.length > 150 ? p.description.substring(0, 150) + '...' : p.description) : '-'}
+                        </small>
                     </td>
                     <td><span class="category-badge">${categoryLabels[p.category] || p.category}</span></td>
                     <td style="color:#d4a574; font-weight:600">€${p.price}</td>
@@ -324,7 +339,7 @@ function renderProducts() {
 
 window.goToPage = function (page) {
     const filtered = getFilteredProducts();
-    const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+    const totalPages = Math.ceil(filtered.length / itemsPerPage);
     if (page >= 1 && page <= totalPages) {
         currentPage = page;
         renderProducts();
