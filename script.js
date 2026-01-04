@@ -260,32 +260,35 @@ function linkify(text) {
     // Match patterns like "Field: value." or "Field: value" at word boundaries
     const fieldPatterns = [
         'Theme', 'Author', 'Dimensions', 'Style', 'Type', 'Technique',
-        'Place of use', 'Sensations', 'Cost without postage and frame',
-        'Contact', 'Tema', 'Autor', 'Dimensões', 'Estilo', 'Tipo',
-        'Técnica', 'Local de uso', 'Sensações', 'Custo sem portes e moldura',
+        'Place of use', 'Sensations', 'Cost without postage and frame \\(€\\)',
+        'Cost without postage and frame', 'Contact',
+        'Tema', 'Autor', 'Dimensões', 'Estilo', 'Tipo',
+        'Técnica', 'Local de uso', 'Sensações',
+        'Custo sem portes e moldura \\(€\\)', 'Custo sem portes e moldura',
         'Contato', 'Contacto', 'Size', 'Material', 'Format', 'Duration',
-        'Tamanho', 'Formato', 'Duração'
+        'Tamanho', 'Formato', 'Duração', 'Price', 'Preço'
     ];
 
     let formattedText = text;
 
     // Check if text contains structured fields
-    const hasStructuredFields = fieldPatterns.some(field =>
-        text.includes(field + ':') || text.includes(field + ' :')
-    );
+    const hasStructuredFields = fieldPatterns.some(field => {
+        const cleanField = field.replace(/\\[()]/g, match => match.slice(1));
+        return text.includes(cleanField + ':') || text.includes(cleanField + ' :');
+    });
 
     if (hasStructuredFields) {
-        // Replace ". " followed by a field name with line break
+        // Replace ". " followed by a field name with line break - handle comma separators too
         fieldPatterns.forEach(field => {
-            // Match field at start or after period/space
-            const regex = new RegExp(`\\.\\s*(${field}\\s*:)`, 'gi');
-            formattedText = formattedText.replace(regex, '<br><strong>$1</strong>');
+            // Match field after period, comma, or space
+            const regex = new RegExp(`[.,]\\s*(${field}\\s*:)`, 'gi');
+            formattedText = formattedText.replace(regex, '<br><span style="color: #d4a574; font-weight: 600;">$1</span>');
         });
 
         // Handle first field (at the very beginning)
         fieldPatterns.forEach(field => {
             const startRegex = new RegExp(`^(${field}\\s*:)`, 'i');
-            formattedText = formattedText.replace(startRegex, '<strong>$1</strong>');
+            formattedText = formattedText.replace(startRegex, '<span style="color: #d4a574; font-weight: 600;">$1</span>');
         });
     }
 
