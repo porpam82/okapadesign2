@@ -23,6 +23,17 @@ let sb; // Renamed from supabase to sb to avoid conflict
 let isEditing = false;
 
 // Helpers
+function escapeHTML(str) {
+    if (!str) return '';
+    return str.replace(/[&<>'"]/g, tag => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+    }[tag]));
+}
+
 function logDiag(msg) {
     console.log('[DIAG]', msg);
     if (diagStatus) {
@@ -288,17 +299,17 @@ function renderProducts() {
         } else {
             productsList.innerHTML = paged.map(p => `
                 <tr>
-                    <td><img src="${p.image_url}" alt="${p.title}" onerror="this.src='https://placehold.co/50x50/1a1a1a/d4a574?text=IMG'"></td>
+                    <td><img src="${p.image_url}" alt="${escapeHTML(p.title)}" onerror="this.src='https://placehold.co/50x50/1a1a1a/d4a574?text=IMG'"></td>
                     <td>
-                        <strong>${p.title}</strong>
-                        <br><small style="color:#888">${p.type || '-'}</small>
+                        <strong>${escapeHTML(p.title)}</strong>
+                        <br><small style="color:#888">${escapeHTML(p.type || '-')}</small>
                     </td>
                     <td>
                         <small style="display:block; max-height: 4.5em; overflow: hidden; color: #aaa; line-height: 1.4; text-align: left;">
-                            ${p.description ? (p.description.length > 150 ? p.description.substring(0, 150) + '...' : p.description) : '-'}
+                            ${p.description ? (p.description.length > 150 ? escapeHTML(p.description.substring(0, 150)) + '...' : escapeHTML(p.description)) : '-'}
                         </small>
                     </td>
-                    <td><span class="category-badge">${categoryLabels[p.category] || p.category}</span></td>
+                    <td><span class="category-badge">${categoryLabels[p.category] || escapeHTML(p.category)}</span></td>
                     <td style="color:#d4a574; font-weight:600">€${p.price}</td>
                     <td>
                         <div style="display: flex; gap: 0.5rem;">
@@ -501,6 +512,55 @@ window.translateText = async function (sourceId, targetId) {
         }
     } catch (err) {
         console.error(err);
+    }
+};
+
+window.generateSitemap = async function () {
+    if (!confirm('Gerar e descarregar novo sitemap.xml?')) return;
+
+    try {
+        logDiag('Gerando sitemap...');
+        const { data, error } = await sb
+            .from('products')
+            .select('id, updated_at')
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        const baseUrl = 'https://okapadesign.com';
+        const now = new Date().toISOString();
+
+        let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+        xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+
+        // Static pages
+        xml += `  <url>\n    <loc>${baseUrl}/</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>1.0</priority>\n  </url>\n`;
+        xml += `  <url>\n    <loc>${baseUrl}/#shop</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.9</priority>\n  </url>\n`;
+
+        // Products
+        data.forEach(p => {
+            const date = p.updated_at ? new Date(p.updated_at).toISOString() : now;
+            xml += `  <url>\n    <loc>${baseUrl}/?product=${p.id}</loc>\n    <lastmod>${date}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n`;
+        });
+
+        xml += '</urlset>';
+
+        // Download
+        const blob = new Blob([xml], { type: 'text/xml' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'sitemap.xml';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+
+        logDiag('✅ Sitemap gerado!');
+        alert('Sitemap gerado! Faça upload deste ficheiro "sitemap.xml" para a raiz do site no GitHub.');
+    } catch (err) {
+        logDiag('❌ Erro sitemap: ' + err.message);
+        alert('Erro: ' + err.message);
     }
 };
 
