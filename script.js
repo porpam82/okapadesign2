@@ -107,7 +107,23 @@ const translations = {
         'type.Pack Merchandising': 'Pack Merchandising',
         'modal.title': 'Como encomendar',
         'modal.text': 'Gostou do produto? Na okapadesign gostamos de tratar de cada encomenda pessoalmente. Assim, entre em contato via e-mail do autor ou para o e-mail geral.',
-        'modal.button': 'Enviar Email Agora'
+        'modal.button': 'Enviar Email Agora',
+        'about.desc1': 'A minha jornada artística combina a paixão por pinturas tradicionais com design digital moderno.',
+        'about.desc2': 'Crio quadros únicos para decoração e designs de lettering prontos para estampar em t-shirts, garrafas térmicas e outros produtos.',
+        'about.note_label': 'Nota:',
+        'about.note_text': 'Convido amigos para exporem os seus trabalhos no site okapadesign. Cada encomenda é tratada pessoalmente via email do autor.',
+        'stat.works': 'Obras',
+        'stat.clients': 'Clientes',
+        'stat.years': 'Anos',
+        'contact.desc': 'Gostou do produto? Na okapadesign gostamos de tratar de cada encomenda pessoalmente. Assim, entre em contato via e-mail do autor ou para o e-mail geral.',
+        'placeholder.name': 'Nome',
+        'placeholder.email': 'Email',
+        'placeholder.message': 'Mensagem',
+        'btn.send_message': 'Enviar Mensagem',
+        'contact.email_label': 'Email',
+        'contact.location_label': 'Localização',
+        'contact.location_value': 'Lisboa, Portugal',
+        'footer.tagline': 'Pinturas e arte digital para seu espaço e estilo.'
     },
     en: {
         'nav.home': 'Home',
@@ -150,7 +166,23 @@ const translations = {
         'type.Pack Merchandising': 'Merch Pack',
         'modal.title': 'How to order',
         'modal.text': 'Liked the product? At okapadesign we like to handle each order personally. Please contact us via the author\'s email or our general email.',
-        'modal.button': 'Send Email Now'
+        'modal.button': 'Send Email Now',
+        'about.desc1': 'My artistic journey combines a passion for traditional paintings with modern digital design.',
+        'about.desc2': 'I create unique paintings for decoration and lettering designs ready for t-shirt printing, water bottles, and other products.',
+        'about.note_label': 'Note:',
+        'about.note_text': 'I invite friends to showcase their work on the okapadesign website. Each order is handled personally via the author\'s email.',
+        'stat.works': 'Works',
+        'stat.clients': 'Clients',
+        'stat.years': 'Years',
+        'contact.desc': 'Liked the product? At okapadesign we like to handle each order personally. Please contact us via the author\'s email or our general email.',
+        'placeholder.name': 'Name',
+        'placeholder.email': 'Email',
+        'placeholder.message': 'Message',
+        'btn.send_message': 'Send Message',
+        'contact.email_label': 'Email',
+        'contact.location_label': 'Location',
+        'contact.location_value': 'Lisbon, Portugal',
+        'footer.tagline': 'Paintings and digital art for your space and style.'
     }
 };
 
@@ -165,6 +197,14 @@ function setLanguage(lang) {
         const key = el.getAttribute('data-i18n');
         if (translations[lang][key]) {
             el.textContent = translations[lang][key];
+        }
+    });
+
+    // Update placeholders
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (translations[lang][key]) {
+            el.placeholder = translations[lang][key];
         }
     });
 

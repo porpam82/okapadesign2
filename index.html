@@ -182,20 +182,26 @@
                         <div class="about__decoration"></div>
                     </div>
                     <div class="about__info">
-                        <span class="section__subtitle">Sobre o Artista</span>
-                        <h2 class="section__title">Olá, sou o criador da okapadesign</h2>
-                        <p>A minha jornada artística combina a paixão por pinturas tradicionais com design digital
+                        <span class="section__subtitle" data-i18n="about.subtitle">Sobre o Artista</span>
+                        <h2 class="section__title" data-i18n="about.title">Olá, sou o criador da okapadesign</h2>
+                        <p data-i18n="about.desc1">A minha jornada artística combina a paixão por pinturas tradicionais
+                            com design digital
                             moderno.</p>
-                        <p>Crio quadros únicos para decoração e designs de lettering prontos para estampar em t-shirts,
+                        <p data-i18n="about.desc2">Crio quadros únicos para decoração e designs de lettering prontos
+                            para estampar em t-shirts,
                             garrafas térmicas e outros produtos.</p>
                         <p style="font-style: italic; color: var(--color-accent); margin-top: 1rem;">
-                            <strong>Nota:</strong> Convido amigos para exporem os seus trabalhos no site okapadesign.
-                            Cada encomenda é tratada pessoalmente via email do autor.
+                            <strong data-i18n="about.note_label">Nota:</strong> <span
+                                data-i18n="about.note_text">Convido amigos para exporem os seus trabalhos no site
+                                okapadesign. Cada encomenda é tratada pessoalmente via email do autor.</span>
                         </p>
                         <div class="about__stats">
-                            <div class="stat"><span class="stat__number">50+</span><span>Obras</span></div>
-                            <div class="stat"><span class="stat__number">30+</span><span>Clientes</span></div>
-                            <div class="stat"><span class="stat__number">5</span><span>Anos</span></div>
+                            <div class="stat"><span class="stat__number">50+</span><span
+                                    data-i18n="stat.works">Obras</span></div>
+                            <div class="stat"><span class="stat__number">30+</span><span
+                                    data-i18n="stat.clients">Clientes</span></div>
+                            <div class="stat"><span class="stat__number">5</span><span
+                                    data-i18n="stat.years">Anos</span></div>
                         </div>
                     </div>
                 </div>
@@ -205,9 +211,10 @@
         <section class="contact section" id="contact">
             <div class="container">
                 <div class="section__header">
-                    <span class="section__subtitle">Contato</span>
-                    <h2 class="section__title">Vamos Conversar</h2>
-                    <p style="max-width: 600px; margin: 1rem auto; text-align: center; color: var(--color-text-muted);">
+                    <span class="section__subtitle" data-i18n="contact.subtitle">Contato</span>
+                    <h2 class="section__title" data-i18n="contact.title">Vamos Conversar</h2>
+                    <p style="max-width: 600px; margin: 1rem auto; text-align: center; color: var(--color-text-muted);"
+                        data-i18n="contact.desc">
                         Gostou do produto? Na okapadesign gostamos de tratar de cada encomenda pessoalmente. Assim,
                         entre em contato via e-mail do autor ou para o e-mail geral.
                     </p>
@@ -215,24 +222,28 @@
                 <div class="contact__content">
                     <form class="contact__form" id="contact-form">
                         <div class="form__group">
-                            <input type="text" id="name" placeholder="Nome" required>
+                            <input type="text" id="name" placeholder="Nome" data-i18n-placeholder="placeholder.name"
+                                required>
                         </div>
                         <div class="form__group">
-                            <input type="email" id="email" placeholder="Email" required>
+                            <input type="email" id="email" placeholder="Email" data-i18n-placeholder="placeholder.email"
+                                required>
                         </div>
                         <div class="form__group form__group--full">
-                            <textarea id="message" placeholder="Mensagem" required></textarea>
+                            <textarea id="message" placeholder="Mensagem" data-i18n-placeholder="placeholder.message"
+                                required></textarea>
                         </div>
-                        <button type="submit" class="btn btn--primary">Enviar Mensagem</button>
+                        <button type="submit" class="btn btn--primary" data-i18n="btn.send_message">Enviar
+                            Mensagem</button>
                     </form>
                     <div class="contact__info">
                         <div class="contact__card">
-                            <h4>Email</h4>
+                            <h4 data-i18n="contact.email_label">Email</h4>
                             <a href="mailto:okapadesign@gmail.com">okapadesign@gmail.com</a>
                         </div>
                         <div class="contact__card">
-                            <h4>Localização</h4>
-                            <p>Lisboa, Portugal</p>
+                            <h4 data-i18n="contact.location_label">Localização</h4>
+                            <p data-i18n="contact.location_value">Lisboa, Portugal</p>
                         </div>
                         <div class="contact__social">
                             <a href="https://facebook.com/okapadesign" class="social-link" target="_blank"
@@ -255,7 +266,7 @@
             <div class="footer__content">
                 <div class="footer__brand">
                     <span class="footer-logo">okapadesign</span>
-                    <p>Pinturas e arte digital para seu espaço e estilo.</p>
+                    <p data-i18n="footer.tagline">Pinturas e arte digital para seu espaço e estilo.</p>
                 </div>
                 <div class="footer__links">
                     <a href="#home">Início</a>
