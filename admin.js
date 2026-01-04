@@ -291,11 +291,10 @@ function renderProducts() {
                     <td><img src="${p.image_url}" alt="${p.title}" onerror="this.src='https://placehold.co/50x50/1a1a1a/d4a574?text=IMG'"></td>
                     <td>
                         <strong>${p.title}</strong>
-                        ${p.title_en ? '<span class="edit-badge" style="margin-left:5px">EN</span>' : ''}
                         <br><small style="color:#888">${p.type || '-'}</small>
                     </td>
                     <td>
-                        <small style="display:block; max-height: 4.5em; overflow: hidden; color: #aaa; line-height: 1.4;">
+                        <small style="display:block; max-height: 4.5em; overflow: hidden; color: #aaa; line-height: 1.4; text-align: left;">
                             ${p.description ? (p.description.length > 150 ? p.description.substring(0, 150) + '...' : p.description) : '-'}
                         </small>
                     </td>
