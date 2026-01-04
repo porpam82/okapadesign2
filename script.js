@@ -227,14 +227,14 @@ let currentFilter = 'all';
 // ===== DOM ELEMENTS =====
 const navToggle = document.getElementById('nav-toggle');
 const navClose = document.getElementById('nav-close');
+const lightbox = document.getElementById('lightbox');
+const lightboxImage = document.getElementById('lightbox-image');
+const lightboxClose = document.getElementById('lightbox-close');
 const navMenu = document.getElementById('nav-menu');
 const navLinks = document.querySelectorAll('.nav__link');
 const header = document.getElementById('header');
 const shopGrid = document.getElementById('shop-grid');
 const filterBtns = document.querySelectorAll('.gallery__filter');
-const lightbox = document.getElementById('lightbox');
-const lightboxImage = document.getElementById('lightbox-image');
-const lightboxClose = document.getElementById('lightbox-close');
 const contactForm = document.getElementById('contact-form');
 
 // ===== NAVIGATION =====
@@ -354,7 +354,7 @@ function renderShop(filter = currentFilter, page = currentPage) {
     // Render products
     shopGrid.innerHTML = paged.map(art => `
         <article class="product">
-            <div class="product__image">
+            <div class="product__image" onclick="openLightbox('${art.image}', '${art.title.replace(/'/g, "\\'")}')" style="cursor: pointer;">
                 <img src="${art.image}" alt="${art.title}" onerror="this.src='https://placehold.co/400x400/1a1a1a/d4a574?text=${encodeURIComponent(art.title)}'">
                 <span class="product__badge">${translations[currentLang]['badge.' + art.category] || art.category}</span>
             </div>
@@ -452,21 +452,41 @@ filterBtns.forEach(btn => {
 
 // ===== LIGHTBOX =====
 function openLightbox(src, alt) {
+    if (!lightbox || !lightboxImage) return;
     lightboxImage.src = src;
     lightboxImage.alt = alt;
-    lightboxImage.onerror = () => { lightboxImage.src = `https://placehold.co/800x600/1a1a1a/d4a574?text=${encodeURIComponent(alt)}`; };
     lightbox.classList.add('active');
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden'; // Prevent scrolling
 }
-
-lightboxClose?.addEventListener('click', closeLightbox);
-lightbox?.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
 function closeLightbox() {
+    if (!lightbox) return;
     lightbox.classList.remove('active');
-    document.body.style.overflow = '';
+    document.body.style.overflow = ''; // Restore scrolling
+    setTimeout(() => {
+        if (lightboxImage) lightboxImage.src = ''; // Clear image after animation
+    }, 300);
 }
+
+// Event Listeners for Lightbox
+if (lightboxClose) {
+    lightboxClose.addEventListener('click', closeLightbox);
+}
+
+if (lightbox) {
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+            closeLightbox();
+        }
+    });
+}
+
+
 
 // ===== CART (SIMPLE) =====
 function addToCart(id) {
@@ -474,7 +494,6 @@ function addToCart(id) {
     alert(`"${art.title}" adicionado ao carrinho!\n\nEsta é uma demonstração. Integre com um sistema de pagamento real.`);
 }
 
-// ===== CONTACT FORM =====
 // ===== CONTACT FORM =====
 contactForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
