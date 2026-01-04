@@ -289,6 +289,27 @@ async function loadArtworks() {
         console.error('Error loading from Supabase Functions:', err);
     }
     renderShop();
+
+    // Check for Deep Link
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('product');
+    if (productId) {
+        const art = artworks.find(a => a.id == productId);
+        if (art) {
+            openLightbox(art.image, art.title, art.id);
+        }
+    }
+}
+
+// Helper to sanitize HTML to prevent XSS
+function escapeHTML(str) {
+    if (!str) return '';
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
 }
 
 // Helper to make links clickable (URLs and Emails) and format structured descriptions
@@ -309,7 +330,8 @@ function linkify(text) {
         'Tamanho', 'Formato', 'Duração', 'Price', 'Preço'
     ];
 
-    let formattedText = text;
+    // 1. Sanitize raw text FIRST
+    let formattedText = escapeHTML(text);
 
     // Check if text contains structured fields
     const hasStructuredFields = fieldPatterns.some(field => {
@@ -352,13 +374,13 @@ function renderShop(filter = currentFilter, page = currentPage) {
     // Render products
     shopGrid.innerHTML = paged.map(art => `
         <article class="product">
-            <div class="product__image" onclick="openLightbox('${art.image}', '${art.title.replace(/'/g, "\\'")}')" style="cursor: pointer;">
-                <img src="${art.image}" alt="${art.title}" onerror="this.src='https://placehold.co/400x400/1a1a1a/d4a574?text=${encodeURIComponent(art.title)}'">
+            <div class="product__image" onclick="openLightbox('${art.image}', '${art.title.replace(/'/g, "\\'")}', '${art.id}')" style="cursor: pointer; aspect-ratio: 1/1; overflow: hidden;">
+                <img src="${art.image}" alt="${art.title}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://placehold.co/400x400/1a1a1a/d4a574?text=${encodeURIComponent(art.title)}'">
                 <span class="product__badge">${translations[currentLang]['badge.' + art.category] || art.category}</span>
             </div>
             <div class="product__info">
                 <span class="product__category">${translations[currentLang]['type.' + art.type] || art.type}</span>
-                <h3 class="product__title">${currentLang === 'en' && art.titleEn ? art.titleEn : art.title}</h3>
+                <h3 class="product__title">${escapeHTML(currentLang === 'en' && art.titleEn ? art.titleEn : art.title)}</h3>
                 ${art.media ? `
                     <div class="product__media" style="margin: 10px 0;">
                         ${art.media.match(/\.(mp3|wav|ogg)$/i) ?
@@ -449,18 +471,31 @@ filterBtns.forEach(btn => {
 });
 
 // ===== LIGHTBOX =====
-function openLightbox(src, alt) {
+function openLightbox(src, alt, id) {
     if (!lightbox || !lightboxImage) return;
     lightboxImage.src = src;
     lightboxImage.alt = alt;
     lightbox.classList.add('active');
     document.body.style.overflow = 'hidden'; // Prevent scrolling
+
+    // Update URL if ID is provided
+    if (id) {
+        const url = new URL(window.location);
+        url.searchParams.set('product', id);
+        window.history.pushState({}, '', url);
+    }
 }
 
 function closeLightbox() {
     if (!lightbox) return;
     lightbox.classList.remove('active');
     document.body.style.overflow = ''; // Restore scrolling
+
+    // Clear URL param
+    const url = new URL(window.location);
+    url.searchParams.delete('product');
+    window.history.pushState({}, '', url);
+
     setTimeout(() => {
         if (lightboxImage) lightboxImage.src = ''; // Clear image after animation
     }, 300);
