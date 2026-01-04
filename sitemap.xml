@@ -1,60 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <!-- Main Pages -->
-    <url>
-        <loc>https://okapadesign.com/</loc>
-        <lastmod>2026-01-04</lastmod>
-        <changefreq>daily</changefreq>
-        <priority>1.0</priority>
-    </url>
-
-    <!-- Deep Links for Products (Paintings) -->
-    <url><loc>https://okapadesign.com/?product=1</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-    <url><loc>https://okapadesign.com/?product=2</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-    <url><loc>https://okapadesign.com/?product=3</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-    <url><loc>https://okapadesign.com/?product=4</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-    <url><loc>https://okapadesign.com/?product=5</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-    <url><loc>https://okapadesign.com/?product=6</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-    <url><loc>https://okapadesign.com/?product=7</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-    <url><loc>https://okapadesign.com/?product=8</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-
-    <!-- Deep Links for Products (Digital Art) -->
-    <url><loc>https://okapadesign.com/?product=9</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-    <url><loc>https://okapadesign.com/?product=10</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-    <url><loc>https://okapadesign.com/?product=11</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-    <url><loc>https://okapadesign.com/?product=12</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-    <url><loc>https://okapadesign.com/?product=13</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-    <url><loc>https://okapadesign.com/?product=14</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-    <url><loc>https://okapadesign.com/?product=15</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-    <url><loc>https://okapadesign.com/?product=16</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-
-    <!-- Deep Links for Products (Merch) -->
-    <url><loc>https://okapadesign.com/?product=17</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-    <url><loc>https://okapadesign.com/?product=18</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-    <url><loc>https://okapadesign.com/?product=19</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-    <url><loc>https://okapadesign.com/?product=20</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-    <url><loc>https://okapadesign.com/?product=21</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-    <url><loc>https://okapadesign.com/?product=22</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-    <url><loc>https://okapadesign.com/?product=23</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-    <url><loc>https://okapadesign.com/?product=24</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-
-    <!-- Deep Links for Products (Music) -->
-    <url><loc>https://okapadesign.com/?product=25</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-    <url><loc>https://okapadesign.com/?product=26</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-    <url><loc>https://okapadesign.com/?product=27</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-    <url><loc>https://okapadesign.com/?product=28</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-    <url><loc>https://okapadesign.com/?product=29</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-    <url><loc>https://okapadesign.com/?product=30</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-    <url><loc>https://okapadesign.com/?product=31</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-    <url><loc>https://okapadesign.com/?product=32</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-
-    <!-- Deep Links for Products (3D) -->
-    <url><loc>https://okapadesign.com/?product=33</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-    <url><loc>https://okapadesign.com/?product=34</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-    <url><loc>https://okapadesign.com/?product=35</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-    <url><loc>https://okapadesign.com/?product=36</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-    <url><loc>https://okapadesign.com/?product=37</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-    <url><loc>https://okapadesign.com/?product=38</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-    <url><loc>https://okapadesign.com/?product=39</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-    <url><loc>https://okapadesign.com/?product=40</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-</urlset>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://yjayutnbxfblzndtvqae.supabase.co/storage/v1/object/public/product-images/sitemap.xml</loc>
+  </sitemap>
+</sitemapindex>
