@@ -104,7 +104,10 @@ const translations = {
         'type.Bundle Completo': 'Bundle Completo',
         'type.Assets 2D': 'Assets 2D',
         'type.Modelos 3D': 'Modelos 3D',
-        'type.Pack Merchandising': 'Pack Merchandising'
+        'type.Pack Merchandising': 'Pack Merchandising',
+        'modal.title': 'Como encomendar',
+        'modal.text': 'Gostou do produto? Na okapadesign gostamos de tratar de cada encomenda pessoalmente. Assim, entre em contato via e-mail do autor ou para o e-mail geral.',
+        'modal.button': 'Enviar Email Agora'
     },
     en: {
         'nav.home': 'Home',
@@ -144,7 +147,10 @@ const translations = {
         'type.Bundle Completo': 'Complete Bundle',
         'type.Assets 2D': '2D Assets',
         'type.Modelos 3D': '3D Models',
-        'type.Pack Merchandising': 'Merch Pack'
+        'type.Pack Merchandising': 'Merch Pack',
+        'modal.title': 'How to order',
+        'modal.text': 'Liked the product? At okapadesign we like to handle each order personally. Please contact us via the author\'s email or our general email.',
+        'modal.button': 'Send Email Now'
     }
 };
 
