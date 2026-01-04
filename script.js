@@ -252,15 +252,49 @@ async function loadArtworks() {
     renderShop();
 }
 
-// Helper to make links clickable
-// Helper to make links clickable (URLs and Emails)
+// Helper to make links clickable (URLs and Emails) and format structured descriptions
 function linkify(text) {
     if (!text) return '';
+
+    // First, format structured fields with line breaks
+    // Match patterns like "Field: value." or "Field: value" at word boundaries
+    const fieldPatterns = [
+        'Theme', 'Author', 'Dimensions', 'Style', 'Type', 'Technique',
+        'Place of use', 'Sensations', 'Cost without postage and frame',
+        'Contact', 'Tema', 'Autor', 'Dimensões', 'Estilo', 'Tipo',
+        'Técnica', 'Local de uso', 'Sensações', 'Custo sem portes e moldura',
+        'Contato', 'Contacto', 'Size', 'Material', 'Format', 'Duration',
+        'Tamanho', 'Formato', 'Duração'
+    ];
+
+    let formattedText = text;
+
+    // Check if text contains structured fields
+    const hasStructuredFields = fieldPatterns.some(field =>
+        text.includes(field + ':') || text.includes(field + ' :')
+    );
+
+    if (hasStructuredFields) {
+        // Replace ". " followed by a field name with line break
+        fieldPatterns.forEach(field => {
+            // Match field at start or after period/space
+            const regex = new RegExp(`\\.\\s*(${field}\\s*:)`, 'gi');
+            formattedText = formattedText.replace(regex, '<br><strong>$1</strong>');
+        });
+
+        // Handle first field (at the very beginning)
+        fieldPatterns.forEach(field => {
+            const startRegex = new RegExp(`^(${field}\\s*:)`, 'i');
+            formattedText = formattedText.replace(startRegex, '<strong>$1</strong>');
+        });
+    }
+
     // URLs
-    let html = text.replace(/(https?:\/\/[^\s]+)/g, url => `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color: var(--color-accent); text-decoration: underline;">${url}</a>`);
+    formattedText = formattedText.replace(/(https?:\/\/[^\s]+)/g, url => `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color: var(--color-accent); text-decoration: underline;">${url}</a>`);
     // Emails
-    html = html.replace(/([a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})/g, email => `<a href="mailto:${email}" style="color: var(--color-accent); text-decoration: underline;">${email}</a>`);
-    return html;
+    formattedText = formattedText.replace(/([a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})/g, email => `<a href="mailto:${email}" style="color: var(--color-accent); text-decoration: underline;">${email}</a>`);
+
+    return formattedText;
 }
 
 function renderShop(filter = currentFilter, page = currentPage) {
