@@ -1,8 +1,41 @@
+# General web crawlers
 User-agent: *
 Allow: /
-
-# Block admin page from indexing
 Disallow: /admin.html
 
-# Sitemap location
+# AI/LLM Crawlers - Explicitly allow for discoverability
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: claude-web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Omgilibot
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+# Sitemap & AI metadata
 Sitemap: https://okapadesign.com/sitemap.xml
+
+# AI metadata file for LLMs
+# See: https://okapadesign.com/ai.txt

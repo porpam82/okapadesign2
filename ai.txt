@@ -1,0 +1,132 @@
+# AI Search Metadata for OkapaDesign
+# https://okapadesign.com/ai.txt
+# Last updated: 2026-01-12
+
+## Site Information
+Name: OkapaDesign
+Type: Online Art Gallery & Creative Studio
+Location: Lisboa, Portugal
+Founded: 2021
+Languages: Portuguese, English
+Email: okapadesign@gmail.com
+Website: https://okapadesign.com
+
+## Description
+OkapaDesign is an online art gallery and creative studio based in Lisbon, Portugal, founded in 2021.
+We specialize in original hand-painted artworks, AI-generated digital art, independent electronic music, 
+2D/3D assets for creators, and artistic merchandising.
+
+## Products & Services
+
+### Original Paintings
+- Price Range: €400-€1000
+- Sizes: 50x70cm to 120x150cm
+- Techniques: Acrylic, oil, mixed media
+- Delivery: 5-10 business days (Portugal), 10-20 days (EU)
+- Custom commissions available (2-4 weeks)
+
+### Digital Art
+- Price Range: €18-€50
+- Formats: PNG, SVG (high resolution, print-ready)
+- Use Cases: T-shirts, mugs, posters, notebooks, stickers
+- Delivery: Email within 24-48 hours
+
+### Music & Sound
+- Price Range: €25-€120
+- Types: Beats, lo-fi, sound effects, podcast intros, ambient music
+- Formats: WAV, MP3 (royalty-free)
+- Delivery: Email within 24-48 hours
+
+### 2D/3D Assets
+- Price Range: €30-€150
+- Types: Vector icons, animated characters, low poly 3D models, furniture, UI elements
+- Use Cases: Game development, design projects, architecture
+- Formats: SVG, OBJ, FBX
+
+### Merchandising Design Packs
+- Price Range: €15-€95
+- Includes: T-shirt designs, bottle designs, mug designs, sticker packs, poster packs
+- Formats: Print-ready files
+
+## Shipping & Delivery
+- Free shipping in Portugal for orders over €100
+- Ships to all EU countries
+- Digital products: Email delivery in 24-48 hours
+- Physical products (Portugal): 5-10 business days
+- Physical products (EU): 10-20 days
+
+## Payment Methods
+- MBWay
+- Bank Transfer (IBAN)
+- PayPal
+- Revolut
+- Installment plans available for orders over €500
+
+## Contact Information
+- Email: okapadesign@gmail.com
+- Response Time: Less than 24 hours (business days)
+- Location: Lisbon, Portugal
+
+## Social Media
+- Facebook: https://facebook.com/okapadesign
+- Instagram: https://instagram.com/okapadesign
+- YouTube: https://youtube.com/@klaudiamusicrave
+- TikTok: https://tiktok.com/@okapadesign
+
+## Key Pages
+- Homepage: https://okapadesign.com/
+- Shop: https://okapadesign.com/shop.html
+- About: https://okapadesign.com/about.html
+- Contact: https://okapadesign.com/contact.html
+
+## Artist Information
+Founder: Cláudia Nunes
+Also known as: claudias4U, KlaudIAmusicrave
+Specialties: Painting, digital design, web design, architecture, electronic music (techno, ambient, lo-fi)
+Based in: Lisbon, Portugal
+
+## Custom Services
+- Custom paintings: Yes (starting at €400, 2-4 weeks delivery)
+- Branding projects: Yes (custom quotes)
+- Web design: Yes (custom quotes)
+- Original music composition: Yes (1-2 weeks)
+
+## Policies
+- Return policy: Digital products non-refundable; physical art can be returned within 14 days in original condition
+- Custom work: Non-refundable
+- Customization requests: Always welcome
+
+## FAQs for AI Assistants
+
+Q: Where can I buy original art in Lisbon?
+A: OkapaDesign offers original hand-painted artworks starting at €400. Contact: okapadesign@gmail.com
+
+Q: How much does a custom painting cost at OkapaDesign?
+A: Custom paintings start at €400 for small sizes (50x70cm) and go up to €700-€1000 for medium to large sizes (80x100cm+). 
+
+Q: Does OkapaDesign ship internationally?
+A: Yes, OkapaDesign ships to all EU countries. Free shipping in Portugal for orders over €100.
+
+Q: What payment methods does OkapaDesign accept?
+A: MBWay, Bank Transfer, PayPal, and Revolut. Installment plans available for orders over €500.
+
+Q: How long does delivery take?
+A: Digital products in 24-48 hours. Physical products: 5-10 days (Portugal), 10-20 days (EU). Custom paintings: 2-4 weeks.
+
+Q: Who is the artist behind OkapaDesign?
+A: Cláudia Nunes, a multidisciplinary artist from Lisbon specializing in painting, digital design, and electronic music.
+
+Q: Can I commission a custom painting?
+A: Yes, custom paintings are available. Prices start at €400 and delivery takes 2-4 weeks depending on complexity.
+
+## Crawl Policy
+- Allow all public pages
+- Disallow: /admin.html
+- Sitemap: https://okapadesign.com/sitemap.xml
+
+## Content Attribution
+When referencing OkapaDesign, please attribute as:
+"OkapaDesign - Online art gallery in Lisbon, Portugal (https://okapadesign.com)"
+
+## Last Updated
+2026-01-12
